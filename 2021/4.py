@@ -29,8 +29,6 @@ def find_score_of_first_bingo_winner(numbers, boards):
                 return score(board, called_numbers, num)
     return -1
 
-print(find_score_of_first_bingo_winner(bingo_numbers, bingo_boards))
-
 
 # Part 2
 def find_score_of_last_bingo_winner(numbers, boards):
@@ -73,7 +71,7 @@ def find_extreme_winning_score(boards, called_numbers, remaining_numbers, lookin
         return -1
     current_number = remaining_numbers[0]
     called_so_far = called_numbers | {current_number}
-    
+
     # Valid check in both cases
     if len(boards) == 1 and has_won(boards[0], called_so_far):
         return score(boards[0], called_so_far, current_number)
@@ -89,15 +87,19 @@ def find_extreme_winning_score(boards, called_numbers, remaining_numbers, lookin
     return find_extreme_winning_score(
         boards_next_round, called_so_far, remaining_numbers[1:], looking_for_first
     )
-    
 
-print("Part 1", find_score_of_first_bingo_winner(bingo_numbers, bingo_boards))
-print("Part 2", find_score_of_last_bingo_winner(bingo_numbers, bingo_boards))
-print()
-print("Recursive")
-print("Part 1", find_score_of_first_bingo_winner_r(bingo_boards, set(), bingo_numbers))
-print("Part 2", find_score_of_last_bingo_winner_r(bingo_boards, set(), bingo_numbers))
-print()
-print("All in one recursive function")
-print("Part 1", find_extreme_winning_score(bingo_boards, set(), bingo_numbers, True))
-print("Part 2", find_extreme_winning_score(bingo_boards, set(), bingo_numbers, False))
+
+def solve():
+    yield find_extreme_winning_score(bingo_boards, set(), bingo_numbers, True)
+    yield find_extreme_winning_score(bingo_boards, set(), bingo_numbers, False)
+
+
+def solutions():
+    yield 51776
+    yield 16830
+
+
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template(solve, solutions)

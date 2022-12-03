@@ -20,7 +20,6 @@ def spawn(timers, days_to_go):
     )
 
 
-print(len(spawn(initial_state, 80)))
 
 
 # Part 2
@@ -54,32 +53,18 @@ def smart_spawn(lanternfish_timers, days_to_go):
     return sum(size_of_family_new(fish, days_to_go) for fish in lanternfish_timers)
 
 
-print(smart_spawn(initial_state, 256))
+def solve():
+    # print("Part 1:", len(spawn(initial_state, 80)))
+    yield smart_spawn(initial_state, 80)
+    yield smart_spawn(initial_state, 256)
 
 
-
-def smmm_spawn(timer_counts, days_to_go):
-    if days_to_go <= 0:
-        return timer_counts
-    print(days_to_go, sum(count for count in timer_counts.values()))
-    return smmm_spawn(
-        {
-            **{8: timer_counts[0]},
-            **{max(timer - 1, (timer - 1) % 7): count for timer, count in timer_counts.items()},
-        },
-        days_to_go - 1,
-    )
+def solutions():
+    yield 379114
+    yield 1702631502303
 
 
-def get_population_growth(lanternfish_timers, days_to_go):
-    timer_counts = {i: 0 for i in range(9)}
-    for timer in lanternfish_timers:
-        timer_counts[timer] += 1
-    return sum(value for value in smmm_spawn(timer_counts, days_to_go).values())
+if __name__ == "__main__":
+    from helpers import main_template
 
-
-print(get_population_growth(initial_state, 256))
-
-
-
-
+    main_template(solve, solutions)

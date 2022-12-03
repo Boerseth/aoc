@@ -1,21 +1,9 @@
-data = [line.strip() for line in open("input_14", "r").readlines() if line.strip()]
-polymer_template = data.pop(0)
-insertion_rule = dict(d.split(" -> ") for d in data)
-
-
 # because "AAA".count("AA") == 1 ...
 def properly_count_substring(string, substring):
     return sum(1 for i in range(len(string)) if string[i:].startswith(substring))
 
 
-frequencies = {pair: properly_count_substring(polymer_template, pair) for pair in insertion_rule}
-pair_sources = {pair: [] for pair in insertion_rule}
-for source, insert in insertion_rule.items():
-    pair_sources[source[0] + insert].append(source)
-    pair_sources[insert + source[1]].append(source)
-
-
-def generate_element_count(freqs, N):
+def generate_element_count(freqs, pair_sources, N):
     for _ in range(N):
         freqs = {p: sum(freqs[source] for source in pair_sources[p]) for p in freqs}
     count = {element: 0 for pair in freqs for element in pair}
@@ -26,5 +14,29 @@ def generate_element_count(freqs, N):
     return [(value + 1) // 2 for value in count.values()]
 
 
-print("Part 1", (lambda count: max(count) - min(count))(generate_element_count(frequencies, 10)))
-print("Part 2", (lambda count: max(count) - min(count))(generate_element_count(frequencies, 40)))
+def solve():
+    data = [line.strip() for line in open("input_14", "r").readlines() if line.strip()]
+    polymer_template = data.pop(0)
+    insertion_rule = dict(d.split(" -> ") for d in data)
+
+    frequencies = {pair: properly_count_substring(polymer_template, pair) for pair in insertion_rule}
+    pair_sources = {pair: [] for pair in insertion_rule}
+    for source, insert in insertion_rule.items():
+        pair_sources[source[0] + insert].append(source)
+        pair_sources[insert + source[1]].append(source)
+
+    part_1_count = generate_element_count(frequencies, pair_sources, 10)
+    yield max(part_1_count) - min(part_1_count)
+    part_2_count = generate_element_count(frequencies, pair_sources, 40)
+    yield max(part_2_count) - min(part_2_count)
+
+
+def solutions():
+    yield 2321
+    yield 2399822193707
+
+
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template(solve, solutions)
