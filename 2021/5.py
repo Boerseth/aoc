@@ -26,5 +26,17 @@ def is_diagonal(x1, y1, x2, y2):
     return x1 != x2 and y1 != y2
 
 
-print("Part 1:", len(find_line_overlaps([l for l in lines if not is_diagonal(*l)])))
-print("Part 2:", len(find_line_overlaps(lines)))
+def solve():
+    yield len(find_line_overlaps([l for l in lines if not is_diagonal(*l)]))
+    yield len(find_line_overlaps(lines))
+
+
+def solutions():
+    yield 6113
+    yield 20373
+
+
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template(solve, solutions)
