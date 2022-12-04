@@ -9,7 +9,7 @@ def fold(points, fold_direction, fold_coord):
 
 
 def solve():
-    lines = [line.strip() for line in open("input_13", "r").readlines() if line.strip()]
+    lines = [line.strip() for line in open("inputs/13", "r").readlines() if line.strip()]
 
     coordinates = set()
     folds = []

@@ -15,7 +15,7 @@ def generate_element_count(freqs, pair_sources, N):
 
 
 def solve():
-    data = [line.strip() for line in open("input_14", "r").readlines() if line.strip()]
+    data = [line.strip() for line in open("inputs/14", "r").readlines() if line.strip()]
     polymer_template = data.pop(0)
     insertion_rule = dict(d.split(" -> ") for d in data)
 

@@ -1,4 +1,4 @@
-with open("input_4", "r") as f:
+with open("inputs/4", "r") as f:
     lines = f.readlines()
 
 

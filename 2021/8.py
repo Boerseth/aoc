@@ -1,4 +1,4 @@
-lines = [line.strip() for line in open("input_8", "r").readlines()]
+lines = [line.strip() for line in open("inputs/8", "r").readlines()]
 
 
 def interpret(line):

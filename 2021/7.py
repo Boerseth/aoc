@@ -1,5 +1,5 @@
 def solve():
-    positions = list(map(int, open("input_7", "r").readline().split(",")))
+    positions = list(map(int, open("inputs/7", "r").readline().split(",")))
     low = min(positions)
     high = max(positions)
 
