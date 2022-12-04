@@ -31,7 +31,7 @@ def find_completion_score(line):
 
 
 def solve():
-    data = [line.strip() for line in open("input_10", "r").readlines()]
+    data = [line.strip() for line in open("inputs/10", "r").readlines()]
     yield sum(find_corruption_score(line) for line in data)
     incomplete_lines = [line for line in data if find_corruption_score(line) == 0]
     sorted_scores = sorted([find_completion_score(line) for line in incomplete_lines])

@@ -25,7 +25,7 @@ def find_number_of_paths(position, move_choices, visited, permitted_small_revisi
 
 
 def solve():
-    cave_system = [line.strip().split("-") for line in open("input_12", "r").readlines()]
+    cave_system = [line.strip().split("-") for line in open("inputs/12", "r").readlines()]
     movement_choices = {cave: set() for cave in {cave for edge in cave_system for cave in edge}}
     for cave_1, cave_2 in cave_system:
         if cave_2 != "start":

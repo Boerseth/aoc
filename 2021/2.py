@@ -8,8 +8,8 @@ def parse(command):
     raise Exception
 
 
-def solve(print_result=False):
-    steps = [parse(line) for line in open("input_2", "r").readlines()]
+def solve():
+    steps = [parse(line) for line in open("inputs/2", "r").readlines()]
     aims = [sum(steps[: i + 1]).imag for i in range(len(steps))]
     yield (lambda z: int(z.real * z.imag))(sum(steps))
 

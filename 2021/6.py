@@ -1,6 +1,6 @@
 test_data = """3,4,3,1,2"""
 test_initial_state = [int(num) for num in test_data.split(",")]
-data = open("input_6", "r").readline()
+data = open("inputs/6", "r").readline()
 initial_state = [int(num) for num in data.split(",")]
 
 

@@ -1,6 +1,6 @@
 lines = [
     [int(num) for xy in line.split(" -> ") for num in xy.split(",")]
-    for line in open("input_5", "r").readlines()
+    for line in open("inputs/5", "r").readlines()
 ]
 
 

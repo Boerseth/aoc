@@ -11,7 +11,7 @@ def filter_data_bitwise(filtered_data, filter_bit, filter_by_most_common=True):
 
 
 def solve():
-    lines = [line for line in open("input_3", "r").readlines()]
+    lines = [line for line in open("inputs/3", "r").readlines()]
     N = len(lines[0].strip())  # number of bits in each number
     data = [int(line, base=2) for line in lines]
 

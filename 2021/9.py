@@ -20,7 +20,7 @@ def get_basin(heights, y, x):
 
 
 def solve():
-    heights = [[int(c) for c in line.strip()] for line in open("input_9", "r").readlines()]
+    heights = [[int(c) for c in line.strip()] for line in open("inputs/9", "r").readlines()]
     N = len(heights)
     M = len(heights[0])
 
