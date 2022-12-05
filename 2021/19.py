@@ -75,34 +75,51 @@ def diff(r1, r2):
     return x1 - x2, y1 - y2, z1 - z2
 
 
-def sq_difference(r1, r2):
-    x, y, z = diff(r1, r2)
+def sq_norm(r):
+    x, y, z = r
     return x ** 2 + y ** 2 + z ** 2
 
 
-def rotations():
+def orientations():
+    # At first, I did this in a cleverer way, as
+    #
+    # for permutation in permutations():
+    #     for rotation in rotations():
+    #         for flip in flips():
+    #             yield lambda x, y, z: permutation(*rotation(*flip(x, y, z)))
+    #
+    # But no-compositions saves like 20% on overall running time.
+    # Creating the difference sets is what takes the most time now,
+    # so the composed function calls, while elegant, are not optimal.
     yield lambda x, y, z: (x, y, z)
     yield lambda x, y, z: (-y, x, z)
     yield lambda x, y, z: (-x, -y, z)
     yield lambda x, y, z: (y, -x, z)
 
-
-def flips():
-    yield lambda x, y, z: (x, y, z)
     yield lambda x, y, z: (-y, -x, -z)
+    yield lambda x, y, z: (x, -y, -z)
+    yield lambda x, y, z: (y, x, -z)
+    yield lambda x, y, z: (-x, y, -z)
 
-
-def permutations():
-    yield lambda x, y, z: (x, y, z)
     yield lambda x, y, z: (y, z, x)
+    yield lambda x, y, z: (x, z, -y)
+    yield lambda x, y, z: (-y, z, -x)
+    yield lambda x, y, z: (-x, z, y)
+
+    yield lambda x, y, z: (-x, -z, -y)
+    yield lambda x, y, z: (-y, -z, x)
+    yield lambda x, y, z: (x, -z, y)
+    yield lambda x, y, z: (y, -z, -x)
+
     yield lambda x, y, z: (z, x, y)
+    yield lambda x, y, z: (z, -y, x)
+    yield lambda x, y, z: (z, -x, -y)
+    yield lambda x, y, z: (z, y, -x)
 
-
-def orientations():
-    for rotation in rotations():
-        for flip in flips():
-            for permutation in permutations():
-                yield lambda x, y, z: rotation(*flip(*permutation(x, y, z)))
+    yield lambda x, y, z: (-z, -y, -x)
+    yield lambda x, y, z: (-z, x, -y)
+    yield lambda x, y, z: (-z, y, x)
+    yield lambda x, y, z: (-z, -x, y)
 
 
 class ScanData:
@@ -112,8 +129,12 @@ class ScanData:
 
 
 class Scanner:
-    def __init__(self, _id: int, beacons: list[Beacon], distances: list[Distance]) -> None:
+    def __init__(self, _id: int, beacons: list[Beacon]) -> None:
         self.id = _id
+        distances = [
+            d for d in [diff(r1, r2) for r1 in beacons for r2 in beacons]
+            if sq_norm(d) < CLOSE_NEIGH_CUTOFF_SQUARED
+        ]
         self.data_orientations = [
             ScanData(
                 {orn(*b) for b in beacons},
@@ -180,7 +201,7 @@ def attempt_calibration(
     cs: CalibratedScanner, s: Scanner
 ) -> None | tuple[Position, set[Beacon], set[int]]:
     for data in s.data_orientations:
-        distance_match = len(data.distances.intersection(cs.distances))
+        distance_match = len(data.distances & cs.distances)
         if distance_match < CLOSE_DISTANCE_MATCH_THRESHOLD:
             continue
         if match := attempt_oriented_calibration(cs, data.beacons):
@@ -221,13 +242,6 @@ def calibrate_scanners(scanners: list[Scanner]):
     return calibrated_scanners.values()
 
 
-def get_close_distances(beacons: list[Beacon]) -> list[tuple[Beacon, Beacon]]:
-    return [
-        diff(r1, r2) for r1 in beacons for r2 in beacons
-        if sq_difference(r1, r2) < CLOSE_NEIGH_CUTOFF_SQUARED
-    ]
-
-
 def get_readings_from_input_file() -> list[list[Beacon]]:
     with open("inputs/19", "r") as f:
         input_text = f.read().strip()
@@ -244,8 +258,7 @@ def get_readings_from_input_file() -> list[list[Beacon]]:
 
 def solve():
     scanners = [
-        Scanner(i, beacons, get_close_distances(beacons))
-        for i, beacons in enumerate(get_readings_from_input_file())
+        Scanner(i, beacons) for i, beacons in enumerate(get_readings_from_input_file())
     ]
     calibrated_scanners = calibrate_scanners(scanners)
 
@@ -269,4 +282,4 @@ def solutions():
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template(solve, solutions, with_timer=True)
