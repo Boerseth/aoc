@@ -1,4 +1,4 @@
-strings = open("input_5", "r").readlines()
+strings = open("inputs/5", "r").readlines()
 
 
 def is_nice_1(s):

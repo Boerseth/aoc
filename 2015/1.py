@@ -1,4 +1,4 @@
-instructions = open("input_1", "r").readline()
+instructions = open("inputs/1", "r").readline()
 
 # Part 1
 print("Part 1:", sum(1 if c == "(" else -1 if c == ")" else 0 for c in instructions))

@@ -1,4 +1,4 @@
-instructions = [sorted([int(num) for num in line.split("x")]) for line in open("input_2", "r").readlines()]
+instructions = [sorted([int(num) for num in line.split("x")]) for line in open("inputs/2", "r").readlines()]
 
 
 # Part 1
