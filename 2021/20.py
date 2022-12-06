@@ -40,6 +40,7 @@ if __name__ == "__main__":
 
     main_template(solve, solutions)
 
+"""
 quit()
 
 
@@ -93,3 +94,4 @@ show_image(image)
 candidates = {z for c in image for z in neighbours(c)}
 image = {z for z in candidates if will_be_on(z, image)}
 show_image(image)
+"""

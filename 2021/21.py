@@ -76,6 +76,7 @@ if __name__ == "__main__":
 
     main_template(solve, solutions)
 
+"""
 
 quit()
 
@@ -125,3 +126,4 @@ for roll in range(40):
 score_1 = sum(freq for (pos1, pos2, scr1, scr2), freq in universes.items() if scr1 > 20)
 score_2 = sum(freq for (pos1, pos2, scr1, scr2), freq in universes.items() if scr2 > 20)
 print("Part 2:", max(score_1, score_2))
+"""
