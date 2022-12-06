@@ -1,11 +1,26 @@
-dirs = [{"^": 1j, ">": 1, "v": -1j, "<": -1}[c] for c in open("inputs/3", "r").readline().strip()]
+def walk(directions):
+    rooms = [0]
+    for direction in directions:
+        rooms.append(rooms[-1] + direction)
+    return rooms
+
+def solve():
+    with open("inputs/3", "r") as f:
+        text = f.read().strip()
+    directions = [{"^": 1j, ">": 1, "v": -1j, "<": -1}[c] for c in text]
+
+    # How many rooms?
+    yield len(set(walk(directions)))
+    # How many rooms when split in two?
+    yield len(set(walk(directions[::2]) + walk(directions[1::2])))
 
 
-# Part 1:
-print("Part 1:", len(set(sum(dirs[:i]) for i in range(len(dirs) + 1))))
+def solutions():
+    yield 2592
+    yield 2360
 
 
-# Part 2:
-visited_by_santa = set(sum(dirs[: 2 * i : 2]) for i in range(len(dirs[::2]) + 1))
-visited_by_robos = set(sum(dirs[1 : 2 * i : 2]) for i in range(len(dirs[1::2]) + 1))
-print("Part 2:", len(visited_by_santa | visited_by_robos))
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template(solve, solutions)
