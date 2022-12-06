@@ -1,7 +1,7 @@
 import hashlib
 
 
-puzzle = open("input_4", "r").readline().strip()
+puzzle = open("inputs/4", "r").readline().strip()
 
 
 def miner(seed, n):

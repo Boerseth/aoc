@@ -1,4 +1,4 @@
-dirs = [{"^": 1j, ">": 1, "v": -1j, "<": -1}[c] for c in open("input_3", "r").readline().strip()]
+dirs = [{"^": 1j, ">": 1, "v": -1j, "<": -1}[c] for c in open("inputs/3", "r").readline().strip()]
 
 
 # Part 1:
