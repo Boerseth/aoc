@@ -1,4 +1,3 @@
-strings = open("inputs/5", "r").readlines()
 
 
 def is_nice_1(s):
@@ -19,9 +18,21 @@ def is_nice_2(s):
     return True
 
 
-# Part 1
-print("Part 1:", sum(1 for s in strings if is_nice_1(s)))
 
 
-# Part 2
-print("Part 2:", sum(1 for s in strings if is_nice_2(s)))
+def solve():
+    with open("inputs/5", "r") as f:
+        text = f.readlines()
+    yield len(list(filter(is_nice_1, text)))
+    yield len(list(filter(is_nice_2, text)))
+
+
+def solutions():
+    yield 258
+    yield 53
+
+
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template(solve, solutions)
