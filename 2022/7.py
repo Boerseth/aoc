@@ -1,107 +1,66 @@
-ROOT = "root"
+ROOT = ""
+DIR, FILE = "dir", "file"
+SMALL_SIZE, TOTAL_SPACE, REQUIRED_SPACE = 100000, 70000000, 30000000
 
 
-class File:
-    def __init__(self, _type: str, size: int, content: list) -> None:
-        self.type = _type
-        self.size = size
-        self.content = content
-
-
-def cd(current_path, change_directory):
-    if change_directory == "/":
+def cd(path, destination):
+    if destination == "/":
         return ROOT
-    if change_directory == "..":
-        return current_path[:current_path.rfind("/")]
-    return f"{current_path}/{change_directory}"
+    if destination == "..":
+        return path[:path.rfind("/")]
+    return f"{path}/{destination}"
 
 
-def create_hierarchy(description):
-    current_path = ""
-    filesystem = {}
+def new_content(spec: str) -> dict:
+    if spec.isdigit():
+        return {"type": FILE, "size": int(spec), "content": None}
+    assert spec == DIR
+    return {"type": DIR, "size": 0, "content": []}
 
-    for verb, noun, output in description:
-        assert verb in ["cd", "ls"]
 
-        if verb == "cd":
-            assert not output
-            current_path = cd(current_path, noun)
-            if current_path not in filesystem:
-                filesystem[current_path] = {
-                    "type": "dir",
-                    "size": 0,
-                    "content": []
-                }
-        else:
-            assert verb == "ls"
-            assert noun is None
-            for (spec, name) in output:
-                path_of_object = f"{current_path}/{name}"
-                filesystem[current_path]["content"].append(path_of_object)
-                if spec == "dir":
-                    filesystem[path_of_object] = {
-                        "type": "dir",
-                        "size": 0,
-                        "content": []
-                    }
-                else:
-                    assert spec.isdigit()
-                    filesystem[path_of_object] = {
-                        "type": "file",
-                        "size": int(spec),
-                        "content": None
-                    }
+def parse_input(text: str) -> dict[str, dict]:
+    # directories initialised with size 0; computed afterwards
+    filesystem = {ROOT: new_content(DIR)}
+    path = ROOT
+    for command, *output_lines in map(str.splitlines, text.split("\n$ ")):
+        if command.startswith("cd "):
+            path = cd(path, command[3:])
+        if command.startswith("ls"):
+            if path in filesystem and filesystem[path]["content"]:
+                continue  # Already ls'd here
+            for spec, name in map(str.split, output_lines):
+                content_path = f"{path}/{name}"
+                filesystem[content_path] = new_content(spec)
+                filesystem[path]["content"].append(content_path)
+
+    # populate directory sizes
+    directory_paths = [p for p, info in filesystem.items() if info["type"] == DIR]
+    for dir_path in sorted(directory_paths, key=lambda p: p.count("/"), reverse=True):
+        for content_path in filesystem[dir_path]["content"]:
+            filesystem[dir_path]["size"] += filesystem[content_path]["size"]
+
     return filesystem
-
 
 
 def solve():
     with open(f"inputs/7", "r") as f:
         text = f.read()
+    filesystem = parse_input(text)
 
-    description = []
-    for line in text.splitlines():
-        if line.startswith("$ cd "):
-            description.append(("cd", line.split()[-1], []))
-        elif line.startswith("$ ls"):
-            description.append(("ls", None, []))
-        else:
-            spec, name = line.split()
-            assert spec.startswith("dir") or spec.isdigit()
-            description[-1][2].append((spec, name))
+    directory_sizes = [d["size"] for d in filesystem.values() if d["type"] == DIR]
+    yield sum(size for size in directory_sizes if size <= SMALL_SIZE)
 
-    filesystem = create_hierarchy(description)
-    locations = sorted(filesystem.keys(), key=lambda f: len(f.split("/")), reverse=True)
-    for location in locations:
-        if filesystem[location]["type"] == "file":
-            continue
-        for content_loc in filesystem[location]["content"]:
-            filesystem[location]["size"] += filesystem[content_loc]["size"]
-
-    total_size_of_small_dirs = 0
-    for loc, info in filesystem.items():
-        if info["type"] == "dir" and info["size"] <= 100000:
-            total_size_of_small_dirs += info["size"]
-    yield total_size_of_small_dirs
-
-    used_space = filesystem["root"]["size"]
-    total_space = 70000000
-    requirement = 30000000
-    to_be_deleted = used_space - (total_space - requirement)
-    directory_sizes = sorted(info["size"] for info in filesystem.values() if info["size"] >= to_be_deleted)
-    yield directory_sizes[0]
-
-    import json
-
-    yield 0
+    allowed_space = TOTAL_SPACE - REQUIRED_SPACE
+    to_be_deleted = filesystem[ROOT]["size"] - allowed_space
+    yield min(size for size in directory_sizes if size >= to_be_deleted)
 
 
 def solutions():
-    yield 0
-    yield 0
+    yield 1391690
+    yield 5469168
 
 
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions, with_assert=False)
+    main_template(solve, solutions)
