@@ -1,12 +1,23 @@
 from contextlib import contextmanager
 from time import time
+from sys import argv
 
 
-def main_template(solve, solutions, with_assert=True):
-    for part, result, solution in zip([1, 2], solve(), solutions()):
+def main_template(solve, solutions, with_assert=True, with_timer=False):
+    solver = solve()
+    answerer = solutions()
+
+    timer = Timer(f"Problem file {argv[0]}")
+
+    for part in [1, 2]:
+        with timer.time_block(f"Part {part}"):
+            result = next(solver)
         print(f"Part {part}:", result)
         if with_assert:
-            assert result == solution
+            assert result == next(answerer)
+
+    if with_timer:
+        timer.print_table()
 
 
 def _get_table_row(key, key_width, total, val):
