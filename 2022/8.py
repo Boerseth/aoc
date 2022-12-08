@@ -1,64 +1,65 @@
-def cache(inner):
-    _cache = {}
-
-    def outer(*args):
-        if args not in _cache:
-            _cache[args] = inner(*args)
-        return _cache[args]
-
-    return outer
+from functools import cache
+from typing import Iterable
 
 
-def visible_indices_from_one_side(indexed_trees):
-    visible = []
-    for i, tree in indexed_trees:
-        if not visible or tree > visible[-1][0]:
-            visible.append((tree, i))
-    return [i for _, i in visible]
+def visible_indices_from_one_side(indexed_tree_line: Iterable[tuple[int, int]]) -> list[int]:
+    visible_indexed_trees = []
+    for i, tree in indexed_tree_line:
+        if not visible_indexed_trees or tree > visible_indexed_trees[-1][1]:
+            visible_indexed_trees.append((i, tree))
+    return [i for i, _ in visible_indexed_trees]
 
 
-def visible_indices(tree_line):
-    visible_from_start = visible_indices_from_one_side(enumerate(tree_line))
-    visible_from_end = visible_indices_from_one_side(reversed(list(enumerate(tree_line))))
+def visible_indices(tree_line: list[int]) -> list[int]:
+    indexed_tree_line = list(enumerate(tree_line))
+    visible_from_start = visible_indices_from_one_side(indexed_tree_line)
+    visible_from_end = visible_indices_from_one_side(reversed(indexed_tree_line))
     return visible_from_start + visible_from_end
 
 
-def visible_coords_sideways(trees):
-    return [(r, c) for r, row in enumerate(trees) for c in visible_indices(row)]
+class Forest:
+    def __init__(self, trees: list[list[int]]) -> None:
+        self.trees = trees
+        self.R = len(trees)
+        self.C = len(trees[0])
+
+    def __getitem__(self, coords):
+        r, c, *_ = coords
+        return self.trees[r][c]
+
+    @cache
+    def get_viewing_distance(self, r, c, dr, dc):
+        if not (0 <= r + dr < self.R and 0 <= c + dc < self.C):
+            return 0
+        distance = 1
+        r_n = r + dr * distance
+        c_n = c + dc * distance
+        while self[r, c] > self[r_n, c_n] and 0 <= r_n + dr < self.R and 0 <= c_n + dc < self.C:
+            distance += self.get_viewing_distance(r_n, c_n, dr, dc)
+            r_n = r + dr * distance
+            c_n = c + dc * distance
+        return distance
+
+    def get_scenic_score(self, r, c):
+        scenic_score = 1
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            scenic_score *= self.get_viewing_distance(r, c, dr, dc)
+        return scenic_score
+
+    def get_visible_tree_coordinates(self) -> set[tuple[int, int]]:
+        trees_pivot = map(list, zip(*self.trees))
+        return {
+            *{(r, c) for r, row in enumerate(self.trees) for c in visible_indices(row)},
+            *{(r, c) for c, col in enumerate(trees_pivot) for r in visible_indices(col)},
+        }
 
 
 def solve():
     with open("inputs/8", "r") as f:
         text = f.read()
-    trees = [[int(t) for t in row] for row in text.splitlines()]
-    R = len(trees)
-    C = len(trees[0])
-
-    visible_horizontally = visible_coords_sideways(trees)
-    visible_vertically = [(r, c) for c, r in visible_coords_sideways(map(list, zip(*trees)))]
-    visible = {*visible_horizontally, *visible_vertically}
-    yield len(visible)
-
-    @cache
-    def view_distance(r, c, dr, dc):
-        if not (0 <= r + dr < R and 0 <= c + dc < C):
-            return 0
-        distance = 1
-        r_next = r + dr * distance
-        c_next = c + dc * distance
-        while trees[r][c] > trees[r_next][c_next] and 0 <= r_next + dr < R and 0 <= c_next + dc < C:
-            distance += view_distance(r_next, c_next, dr, dc)
-            r_next = r + dr * distance
-            c_next = c + dc * distance
-        return distance
-
-    def scenic_score(r, c):
-        scenic_score = 1
-        for _dir in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            scenic_score *= view_distance(r, c, *_dir)
-        return scenic_score
-
-    yield max(scenic_score(r, c) for r in range(R) for c in range(C))
+    forest = Forest([[int(t) for t in row] for row in text.splitlines()])
+    yield len(forest.get_visible_tree_coordinates())
+    yield max(forest.get_scenic_score(r, c) for r in range(forest.R) for c in range(forest.C))
 
 
 def solutions():
@@ -69,4 +70,4 @@ def solutions():
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template(solve, solutions, with_timer=True)
