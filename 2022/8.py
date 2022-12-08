@@ -1,5 +1,6 @@
 def cache(inner):
     _cache = {}
+
     def outer(*args):
         if args not in _cache:
             _cache[args] = inner(*args)
@@ -8,19 +9,22 @@ def cache(inner):
     return outer
 
 
-def multiply(numbers: list[int]) -> int:
-    if not numbers:
-        return 1
-    return numbers.pop() * multiply(numbers)
-
-
-def get_visible_indices(indexed_trees):
+def visible_indices_from_one_side(indexed_trees):
     visible = []
     for i, tree in indexed_trees:
         if not visible or tree > visible[-1][0]:
             visible.append((tree, i))
-    return visible
+    return [i for _, i in visible]
 
+
+def visible_indices(tree_line):
+    visible_from_start = visible_indices_from_one_side(enumerate(tree_line))
+    visible_from_end = visible_indices_from_one_side(reversed(list(enumerate(tree_line))))
+    return visible_from_start + visible_from_end
+
+
+def visible_coords_sideways(trees):
+    return [(r, c) for r, row in enumerate(trees) for c in visible_indices(row)]
 
 
 def solve():
@@ -30,51 +34,31 @@ def solve():
     R = len(trees)
     C = len(trees[0])
 
-
-    tree_rows = trees
-    tree_cols = [list(c) for c in zip(*trees)]
-    visible = set()
-    for r, tree_row in enumerate(tree_rows):
-        visible.update((r, c) for _, c in get_visible_indices(enumerate(tree_row)))
-        visible.update((r, c) for _, c in get_visible_indices(reversed(list(enumerate(tree_row)))))
-
-    for c, tree_col in enumerate(tree_cols):
-        visible.update((r, c) for _, r in get_visible_indices(enumerate(tree_col)))
-        visible.update((r, c) for _, r in get_visible_indices(reversed(list(enumerate(tree_col)))))
-
-
-
-    #for r in range(R):
-    #    for c in range(C):
-    #        tree = tree_rows[r][c]
-    #        if (
-    #            all(other_tree < tree for other_tree in tree_rows[r][:c])
-    #            or all(other_tree < tree for other_tree in tree_rows[r][c + 1 :])
-    #            or all(other_tree < tree for other_tree in tree_cols[c][:r])
-    #            or all(other_tree < tree for other_tree in tree_cols[c][r + 1 :])
-    #        ):
-    #            visible_positions.add((r, c))
-    yield len(visible_positions)
-
+    visible_horizontally = visible_coords_sideways(trees)
+    visible_vertically = [(r, c) for c, r in visible_coords_sideways(map(list, zip(*trees)))]
+    visible = {*visible_horizontally, *visible_vertically}
+    yield len(visible)
 
     @cache
-    def get_view_distance(r, c, dr, dc):
+    def view_distance(r, c, dr, dc):
         if not (0 <= r + dr < R and 0 <= c + dc < C):
             return 0
         distance = 1
-        while (
-            trees[r][c] > trees[r + dr * distance][c + dc * distance]
-            and 0 <= r + dr * (distance + 1) < R
-            and 0 <= c + dc * (distance + 1) < C
-        ):
-            distance += get_view_distance(r + dr * distance, c + dc * distance, dr, dc)
+        r_next = r + dr * distance
+        c_next = c + dc * distance
+        while trees[r][c] > trees[r_next][c_next] and 0 <= r_next + dr < R and 0 <= c_next + dc < C:
+            distance += view_distance(r_next, c_next, dr, dc)
+            r_next = r + dr * distance
+            c_next = c + dc * distance
         return distance
 
+    def scenic_score(r, c):
+        scenic_score = 1
+        for _dir in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            scenic_score *= view_distance(r, c, *_dir)
+        return scenic_score
 
-    yield max(
-        get_view_distance(r, c, -1, 0) * get_view_distance(r, c, 1, 0) * get_view_distance(r, c, 0, -1) * get_view_distance(r, c, 0, 1)
-        for r in range(R) for c in range(C)
-    )
+    yield max(scenic_score(r, c) for r in range(R) for c in range(C))
 
 
 def solutions():
@@ -85,4 +69,4 @@ def solutions():
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions, with_timer=True)
+    main_template(solve, solutions)
