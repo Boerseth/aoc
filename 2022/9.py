@@ -27,8 +27,39 @@ def solve():
     for step in parse_input(text):
         steps = get_steps(step, ropes[-1])
         ropes.append([k + s for k, s in zip(ropes[-1], steps)])
+    draw_rope_path(ropes)
     yield len(set(knots[1] for knots in ropes))
     yield len(set(knots[N - 1] for knots in ropes))
+
+
+import matplotlib.pyplot as plt
+
+
+colors = [
+    "#FF0000",
+    "#FF8000",
+    "#FFFF00",
+
+    "#80FF00",
+    "#00FF00",
+    "#00FF80",
+
+    "#00FFFF",
+    "#0080FF",
+    "#0000FF",
+    "#000000",
+]
+def draw_rope_path(ropes):
+    paths = [([knots[i].real + i / 10 for knots in ropes], [knots[i].imag + i / 10 for knots in ropes]) for i in range(10)]
+    fig = plt.figure(figsize=(20, 10))
+    axes = plt.axes()
+    axes.set_facecolor("white")
+    axes.set_aspect("equal")
+    for i, ((y, x), color) in enumerate(zip(paths, colors)):
+        plt.plot(x, y, color=color, linewidth=0.3)
+    plt.show()
+
+
 
 
 def solutions():
