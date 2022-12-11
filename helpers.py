@@ -14,7 +14,8 @@ def main_template(solve, solutions, with_assert=True, with_timer=False):
             result = next(solver)
         print(f"Part {part}:", result)
         if with_assert:
-            assert result == next(answerer)
+            expectation = next(answerer)
+            assert result == expectation, (result, expectation)
 
     if with_timer:
         timer.print_table()
