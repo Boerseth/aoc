@@ -70,4 +70,4 @@ def solutions():
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions, with_timer=True)
+    main_template(solve, solutions)

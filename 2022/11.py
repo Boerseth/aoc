@@ -62,4 +62,4 @@ if __name__ == "__main__":
 
     with open(f"inputs/11", "r") as f:
         text = f.read()
-    main_template(lambda: solve(text), solutions, with_assert=False, with_timer=True)
+    main_template(lambda: solve(text), solutions)
