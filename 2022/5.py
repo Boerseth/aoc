@@ -21,19 +21,12 @@ def rearrange(stacks, moves, move_multiple=False):
     return stacks
 
 
-def solve():
-    with open("inputs/5", "r") as f:
-        text = f.read()
+def solve(text):
     yield "".join(stack[-1] for stack in rearrange(*parse(text), False))
     yield "".join(stack[-1] for stack in rearrange(*parse(text), True))
-
-
-def solutions():
-    yield "WSFTMRHPP"
-    yield "GSLCMFBRP"
 
 
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("5", solve)

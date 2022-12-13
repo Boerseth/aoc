@@ -54,20 +54,13 @@ class Forest:
         }
 
 
-def solve():
-    with open("inputs/8", "r") as f:
-        text = f.read()
+def solve(text):
     forest = Forest([[int(t) for t in row] for row in text.splitlines()])
     yield len(forest.get_visible_tree_coordinates())
     yield max(forest.get_scenic_score(r, c) for r in range(forest.R) for c in range(forest.C))
 
 
-def solutions():
-    yield 1546
-    yield 519064
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("8", solve)

@@ -52,14 +52,7 @@ def solve(text):
     yield monkey_business(text, 10_000, 1)
 
 
-def solutions():
-    yield 99840
-    yield 20683044837
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    with open(f"inputs/11", "r") as f:
-        text = f.read()
-    main_template(lambda: solve(text), solutions)
+    main_template("11", solve)

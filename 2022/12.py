@@ -63,14 +63,7 @@ def solve(text):
     yield dijkstra(elavation, end, bottoms, graph)
 
 
-def solutions():
-    yield 528
-    yield 522
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    with open("inputs/12", "r") as f:
-        text = f.read()
-    main_template(lambda: solve(text), solutions)
+    main_template("12", solve)

@@ -22,9 +22,7 @@ def parse_input(text: str) -> Iterable[str]:
             yield step
 
 
-def solve() -> Iterable[int]:
-    with open("inputs/9", "r") as f:
-        text = f.read()
+def solve(text) -> Iterable[int]:
     N = 10
     ropes = [[0 for _ in range(N)]]
     for step in parse_input(text):
@@ -34,12 +32,7 @@ def solve() -> Iterable[int]:
     yield len(set(knots[N - 1] for knots in ropes))
 
 
-def solutions() -> Iterable[int]:
-    yield 6314
-    yield 2504
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("9", solve)

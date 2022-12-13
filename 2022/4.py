@@ -1,9 +1,7 @@
-def solve():
-    with open("inputs/4", "r") as f:
-        lines = f.read().strip()
+def solve(text):
     id_pair_pairs = [
         eval(f'({line.replace(",", "),(").replace("-", ",")})')
-        for line in lines.splitlines()
+        for line in text.strip().splitlines()
     ]
     # Pairs where one is fully inside the other
     yield sum(
@@ -19,12 +17,7 @@ def solve():
     )
 
 
-def solutions():
-    yield 536
-    yield 845
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("4", solve)

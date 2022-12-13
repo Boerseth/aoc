@@ -1,5 +1,5 @@
-def solve():
-    matches = [line.strip().split() for line in open("inputs/2").readlines()]
+def solve(text):
+    matches = [line.strip().split() for line in text.splitlines()]
     strategy = [(" ABC".find(s1), " XYZ".find(s2)) for s1, s2 in matches]
     points_1 = [
         shape_2 + ((1 + shape_2 - shape_1) % 3) * 3 for shape_1, shape_2 in strategy
@@ -11,12 +11,7 @@ def solve():
     yield sum(points_2)
 
 
-def solutions():
-    yield 13484
-    yield 13433
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("2", solve)

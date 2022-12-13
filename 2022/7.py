@@ -42,9 +42,7 @@ def parse_input(text: str) -> dict[str, dict]:
     return filesystem
 
 
-def solve():
-    with open(f"inputs/7", "r") as f:
-        text = f.read()
+def solve(text):
     filesystem = parse_input(text)
 
     directory_sizes = [d["size"] for d in filesystem.values() if d["type"] == DIR]
@@ -55,12 +53,7 @@ def solve():
     yield min(size for size in directory_sizes if size >= to_be_deleted)
 
 
-def solutions():
-    yield 1391690
-    yield 5469168
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("7", solve)
