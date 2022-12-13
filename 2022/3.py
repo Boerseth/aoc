@@ -9,20 +9,14 @@ def sum_intersections(item_groups: list[list[str]]) -> int:
     return sum(priority(item) for overlap in overlaps for item in overlap)
 
 
-def solve() -> None:
-    with open("inputs/3", "r") as f:
-        rucksacks = f.read().strip().splitlines()
+def solve(text: str) -> None:
+    rucksacks = text.strip().splitlines()
 
     yield sum_intersections((r[: len(r) // 2], r[len(r) // 2 :]) for r in rucksacks)
     yield sum_intersections(zip(*[rucksacks[i::3] for i in [0, 1, 2]]))
 
 
-def solutions():
-    yield 8394
-    yield 2413
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("3", solve)

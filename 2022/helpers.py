@@ -1,20 +1,35 @@
+import json
 from contextlib import contextmanager
 from time import time
 from sys import argv
 
 
-def main_template(solve, solutions, with_assert=True, with_timer=False):
-    solver = solve()
-    answerer = solutions()
+def load_solutions(N, with_assert):
+    if with_assert:
+        with open(f"solutions/{N}.json", "r") as f:
+            solutions = json.loads(f.read())
+        return solutions
+    else:
+        return [None, None]
 
-    timer = Timer(f"Problem file {argv[0]}")
 
-    for part in [1, 2]:
+
+def main_template(
+    N, solve, solutions=None, with_assert=True, with_timer=False
+):
+    if not solutions:
+        solutions = load_solutions(N, with_assert)
+    with open(f"inputs/{N}", "r") as f:
+        problem_input = f.read()
+
+    solver = solve(problem_input)
+
+    timer = Timer(f"Day {N}")
+    for part, expectation in zip([1, 2], solutions):
         with timer.time_block(f"Part {part}"):
             result = next(solver)
         print(f"Part {part}:", result)
         if with_assert:
-            expectation = next(answerer)
             assert result == expectation, (result, expectation)
 
     if with_timer:

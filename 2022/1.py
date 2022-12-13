@@ -8,10 +8,9 @@ def get_top_n(numbers, n):
     return top_group
 
 
-def solve():
+def solve(text):
     elf_inventory_lists = [
-        [int(line) for line in chunk.splitlines()]
-        for chunk in open("inputs/1", "r").read().split("\n\n")
+        [int(line) for line in chunk.splitlines()] for chunk in text.split("\n\n")
     ]
     totals = [sum(inv) for inv in elf_inventory_lists]
 
@@ -22,12 +21,7 @@ def solve():
     yield sum(get_top_n(totals, 3))
 
 
-def solutions():
-    yield 71924
-    yield 210406
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("1", solve)

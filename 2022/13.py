@@ -28,14 +28,7 @@ def solve(text):
     yield position_1 * position_2
 
 
-def solutions():
-    yield 6568
-    yield 19493
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    with open("inputs/13", "r") as f:
-        text = f.read()
-    main_template(lambda: solve(text), solutions)
+    main_template("13", solve)

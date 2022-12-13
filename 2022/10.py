@@ -18,16 +18,6 @@ def solve(text):
     yield "\n" + "\n".join("".join(line) for line in screen)
 
 
-def solutions():
-    yield 14540
-    yield """
-#### #  # #### #### #### #  #  ##  #### 
-#    #  #    # #       # #  # #  #    # 
-###  ####   #  ###    #  #### #      #  
-#    #  #  #   #     #   #  # #     #   
-#    #  # #    #    #    #  # #  # #    
-#### #  # #### #    #### #  #  ##  #### """
-
 MESSAGE_1 = """
 ### ### #  # ##    #  # #  # ##  ### ###
 #   #   #  # # #   #  # #  # # # #   #  
@@ -57,9 +47,6 @@ def create(message):
 
 
 if __name__ == "__main__":
-    with open(f"inputs/10", "r") as f:
-        text = f.read()
-
     from helpers import main_template
 
-    main_template(lambda: solve(text), solutions)
+    main_template("10", solve)
