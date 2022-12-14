@@ -59,8 +59,8 @@ def magnitude(p):
     return p if isinstance(p, int) else 3 * magnitude(p[0]) + 2 * magnitude(p[1])
 
 
-def solve():
-    pairs = [eval(line) for line in open("inputs/18", "r").readlines()]
+def solve(text):
+    pairs = [eval(line) for line in text.splitlines()]
     snail_sum = pairs[0]
     for pair in pairs[1:]:
         snail_sum = add_pairs(snail_sum, pair)
@@ -69,12 +69,7 @@ def solve():
     yield max(magnitude(add_pairs(p1, p2)) for p1 in pairs for p2 in pairs)
 
 
-def solutions():
-    yield 4391
-    yield 4626
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("18", solve)

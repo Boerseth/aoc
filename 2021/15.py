@@ -62,9 +62,8 @@ def find_shortest_path_length(risk_level, R, C):
     return path_length[R - 1, C - 1]
 
 
-def solve():
-    with open("inputs/15", "r") as f:
-        lines = f.readlines()
+def solve(text):
+    lines = text.splitlines()
     R = len(lines)
     C = len(lines[0].strip())
 
@@ -80,12 +79,7 @@ def solve():
     yield find_shortest_path_length(risk_level_2, 5 * R, 5 * C)
 
 
-def solutions():
-    yield 523
-    yield 2876
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("15", solve)

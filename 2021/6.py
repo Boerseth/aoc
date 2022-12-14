@@ -1,10 +1,3 @@
-test_data = """3,4,3,1,2"""
-test_initial_state = [int(num) for num in test_data.split(",")]
-data = open("inputs/6", "r").readline()
-initial_state = [int(num) for num in data.split(",")]
-
-
-# Part 1
 def next_timer_state(timer):
     if timer >= 7:
         return timer - 1
@@ -20,9 +13,6 @@ def spawn(timers, days_to_go):
     )
 
 
-
-
-# Part 2
 # Off-by-one is a bitch, so take these recursion formulae with a fistful of salt
 # P(i, d) = | 1 if i >= d
 #           | else P(0, d-1)
@@ -53,18 +43,14 @@ def smart_spawn(lanternfish_timers, days_to_go):
     return sum(size_of_family_new(fish, days_to_go) for fish in lanternfish_timers)
 
 
-def solve():
+def solve(text):
+    initial_state = [int(num) for num in text.strip().split(",")]
     # print("Part 1:", len(spawn(initial_state, 80)))
     yield smart_spawn(initial_state, 80)
     yield smart_spawn(initial_state, 256)
 
 
-def solutions():
-    yield 379114
-    yield 1702631502303
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("6", solve)

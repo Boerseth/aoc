@@ -242,23 +242,20 @@ def calibrate_scanners(scanners: list[Scanner]):
     return calibrated_scanners.values()
 
 
-def get_readings_from_input_file() -> list[list[Beacon]]:
-    with open("inputs/19", "r") as f:
-        input_text = f.read().strip()
-
+def get_readings_from_input(text: str) -> list[list[Beacon]]:
     # Remove headers
-    headers = input_text.split("---")[1::2]
+    headers = text.strip().split("---")[1::2]
     assert all(header.startswith(" scanner ") for header in headers)
-    scanner_outputs = input_text.split("---")[0::2]
+    scanner_outputs = text.strip().split("---")[0::2]
     return [
         [tuple(map(int, line.split(","))) for line in output.strip().split("\n") if line]
         for output in scanner_outputs if output
     ]
 
 
-def solve():
+def solve(text):
     scanners = [
-        Scanner(i, beacons) for i, beacons in enumerate(get_readings_from_input_file())
+        Scanner(i, beacons) for i, beacons in enumerate(get_readings_from_input(text))
     ]
     calibrated_scanners = calibrate_scanners(scanners)
 
@@ -274,12 +271,7 @@ def solve():
     yield metro_metric
 
 
-def solutions():
-    yield 425
-    yield 13354
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions, with_timer=True)
+    main_template("19", solve)

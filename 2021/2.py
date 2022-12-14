@@ -8,8 +8,8 @@ def parse(command):
     raise Exception
 
 
-def solve():
-    steps = [parse(line) for line in open("inputs/2", "r").readlines()]
+def solve(text):
+    steps = [parse(line) for line in text.splitlines()]
     aims = [sum(steps[: i + 1]).imag for i in range(len(steps))]
     yield (lambda z: int(z.real * z.imag))(sum(steps))
 
@@ -17,12 +17,7 @@ def solve():
     yield int(answer.real * answer.imag)
 
 
-def solutions():
-    yield 1746616
-    yield 1741971043
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("2", solve)

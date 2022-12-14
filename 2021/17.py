@@ -1,5 +1,5 @@
-def solve():
-    _, target = open("inputs/17", "r").readline().split(": ")
+def solve(text):
+    _, target = text.split(": ")
     xmin, xmax, ymin, ymax = [int(v) for word in target.split(", ") for v in word[2:].split("..")]
 
     yield (ymin ** 2 - abs(ymin)) // 2
@@ -29,15 +29,10 @@ def solve():
     yield len(hits)
 
 
-def solutions():
-    yield 6903
-    yield 2351
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("17", solve)
 
 
 # import matplotlib.pyplot as plt

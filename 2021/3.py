@@ -10,8 +10,8 @@ def filter_data_bitwise(filtered_data, filter_bit, filter_by_most_common=True):
     )
 
 
-def solve():
-    lines = [line for line in open("inputs/3", "r").readlines()]
+def solve(text):
+    lines = [line for line in text.splitlines()]
     N = len(lines[0].strip())  # number of bits in each number
     data = [int(line, base=2) for line in lines]
 
@@ -26,12 +26,7 @@ def solve():
     yield filtered_by_most_common[0] * filtered_by_least_common[0]
 
 
-def solutions():
-    yield 3895776
-    yield 7928162
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("3", solve)

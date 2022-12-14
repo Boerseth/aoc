@@ -49,18 +49,13 @@ def evaluate(packet):
     return eval({PRD: "*", GTH: ">", LTH: "<", EQL: "=="}[packet_type].join(map(str, c)))
 
 
-def solve():
-    outer_packet = parse(BitFeed(f"{int(open('inputs/16', 'r').read().strip(), 16):>08b}"))
+def solve(text):
+    outer_packet = parse(BitFeed(f"{int(text.strip(), 16):>08b}"))
     yield sum(collect_version_numbers(outer_packet))
     yield evaluate(outer_packet)
-
-
-def solutions():
-    yield 940
-    yield 13476220616073
 
 
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("16", solve)

@@ -3,10 +3,8 @@ def neighbours(z):
         yield z + dz
 
 
-
-
-def solve():
-    lines = [line.strip() for line in open("inputs/20", "r").readlines()]
+def solve(text):
+    lines = [line.strip() for line in text.splitlines()]
     enhancer = [1 if c == "#" else 0 for c in lines[0]]
 
     def will_be_on(z, image, is_inverted):
@@ -30,15 +28,10 @@ def solve():
     yield len(enhance_infinite_flipper(image, 50))
 
 
-def solutions():
-    yield 5479
-    yield 19012
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("20", solve)
 
 """
 quit()
