@@ -1,4 +1,3 @@
-lines = [line.strip() for line in open("inputs/8", "r").readlines()]
 
 
 def interpret(line):
@@ -38,7 +37,8 @@ def interpret(line):
         for d in line.split(" | ")[1].split()
     ))
 
-def solve():
+def solve(text):
+    lines = [line.strip() for line in text.splitlines()]
     yield sum(
         sum(1 for word in line.split(" | ")[1].split() if len(word) in [2, 3, 4, 7])
         for line in lines
@@ -46,12 +46,7 @@ def solve():
     yield sum(interpret(line) for line in lines)
 
 
-def solutions():
-    yield 255
-    yield 982158
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("8", solve)

@@ -19,8 +19,8 @@ def get_basin(heights, y, x):
     return cache[(x, y)]
 
 
-def solve():
-    heights = [[int(c) for c in line.strip()] for line in open("inputs/9", "r").readlines()]
+def solve(text):
+    heights = [[int(c) for c in line.strip()] for line in text.splitlines()]
     N = len(heights)
     M = len(heights[0])
 
@@ -34,12 +34,7 @@ def solve():
     yield basin_sizes[-1] * basin_sizes[-2] * basin_sizes[-3]
 
 
-def solutions():
-    yield 436
-    yield 1317792
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("9", solve)

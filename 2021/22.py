@@ -92,9 +92,8 @@ def parse_line(line):
     return on_off == "on", ((xmin, xmax + 1), (ymin, ymax + 1), (zmin, zmax + 1))
 
 
-def solve():
-    with open("inputs/22", "r") as f:
-        boxes = [parse_line(line) for line in f.read().strip().splitlines()]
+def solve(text):
+    boxes = [parse_line(line) for line in text.strip().splitlines()]
 
     init_region = ((-50, 51), (-50, 51), (-50, 51))
     init_boxes = [(on_off, box) for on_off, box in boxes if is_inside_other(box, init_region)]
@@ -104,12 +103,7 @@ def solve():
 
 
 
-def solutions():
-    yield 577205
-    yield 1197308251666843
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("22", solve)

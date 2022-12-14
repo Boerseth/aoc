@@ -1,7 +1,7 @@
-def solve():
-    with open("inputs/21", "r") as f:
-        start_1 = int(f.readline().split(": ")[1].strip())
-        start_2 = int(f.readline().split(": ")[1].strip())
+def solve(text):
+    line_1, line_2 = text.strip().splitlines()
+    start_1 = int(line_1.split(": ")[1].strip())
+    start_2 = int(line_2.split(": ")[1].strip())
 
     pos_1 = start_1
     pos_2 = start_2
@@ -33,7 +33,7 @@ def solve():
             return 0
         if scr_1 == scr_2 == 0:
             return int(pos_1 == start_1 and pos_2 == start_2 and not player_1_turn)
-        
+
         freq = 0
         for i in range(3, 10):
             mult = {3: 1, 4: 3, 5: 6, 6: 7, 7: 6, 8: 3, 9: 1}[i]
@@ -66,15 +66,10 @@ def solve():
     yield max(player_1_wins, player_2_wins)
 
 
-def solutions():
-    yield 918081
-    yield 158631174219251
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("21", solve)
 
 """
 

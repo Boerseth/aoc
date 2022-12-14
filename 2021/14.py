@@ -14,8 +14,8 @@ def generate_element_count(freqs, pair_sources, N):
     return [(value + 1) // 2 for value in count.values()]
 
 
-def solve():
-    data = [line.strip() for line in open("inputs/14", "r").readlines() if line.strip()]
+def solve(text):
+    data = [line.strip() for line in text.splitlines() if line.strip()]
     polymer_template = data.pop(0)
     insertion_rule = dict(d.split(" -> ") for d in data)
 
@@ -31,12 +31,7 @@ def solve():
     yield max(part_2_count) - min(part_2_count)
 
 
-def solutions():
-    yield 2321
-    yield 2399822193707
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("14", solve)

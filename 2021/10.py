@@ -30,20 +30,15 @@ def find_completion_score(line):
     return total
 
 
-def solve():
-    data = [line.strip() for line in open("inputs/10", "r").readlines()]
+def solve(text):
+    data = [line.strip() for line in text.splitlines()]
     yield sum(find_corruption_score(line) for line in data)
     incomplete_lines = [line for line in data if find_corruption_score(line) == 0]
     sorted_scores = sorted([find_completion_score(line) for line in incomplete_lines])
     yield sorted_scores[len(sorted_scores) // 2]
 
 
-def solutions():
-    yield 296535
-    yield 4245130838
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("10", solve)

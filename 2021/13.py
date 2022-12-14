@@ -1,5 +1,3 @@
-
-
 def fold(points, fold_direction, fold_coord):
     if fold_direction == "x":
         return {(fold_coord - abs(fold_coord - x), y) for x, y in points}
@@ -8,8 +6,8 @@ def fold(points, fold_direction, fold_coord):
 
 
 
-def solve():
-    lines = [line.strip() for line in open("inputs/13", "r").readlines() if line.strip()]
+def solve(text):
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
 
     coordinates = set()
     folds = []
@@ -30,18 +28,7 @@ def solve():
     yield "\n" + "\n".join("".join("#" if (x, y) in coordinates else " " for x in range(N)) for y in range(M))
 
 
-def solutions():
-    yield 607
-    yield """
- ##  ###  #### #    ###  #### #### #   
-#  # #  #    # #    #  # #       # #   
-#    #  #   #  #    #  # ###    #  #   
-#    ###   #   #    ###  #     #   #   
-#  # #    #    #    #    #    #    #   
- ##  #    #### #### #    #    #### ####"""
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("13", solve)

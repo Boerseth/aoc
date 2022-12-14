@@ -1,5 +1,5 @@
-def solve():
-    positions = list(map(int, open("inputs/7", "r").readline().split(",")))
+def solve(text):
+    positions = list(map(int, text.strip().split(",")))
     low = min(positions)
     high = max(positions)
 
@@ -13,12 +13,7 @@ def solve():
     yield min(cost_2(i) for i in range(low, high + 1))
 
 
-def solutions():
-    yield 347011
-    yield 98363777
-
-
 if __name__ == "__main__":
     from helpers import main_template
 
-    main_template(solve, solutions)
+    main_template("7", solve)
