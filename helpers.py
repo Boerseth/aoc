@@ -1,30 +1,71 @@
+import argparse
 import json
 from contextlib import contextmanager
 from time import time
+from typing import Any, Callable, Iterator, TypeVar
 from sys import argv
 
-
-def load_solutions(N, with_assert):
-    if with_assert:
-        with open(f"solutions/{N}.json", "r") as f:
-            solutions = json.loads(f.read())
-        return solutions
-    else:
-        return [None, None]
+T = TypeVar("T")
 
 
+def _read_from_file(path: str) -> str:
+    with open(path, "r") as f:
+        return f.read()
 
-def main_template(
-    N, solve, solutions=None, with_assert=True, with_timer=False
-):
-    if not solutions:
-        solutions = load_solutions(N, with_assert)
-    with open(f"inputs/{N}", "r") as f:
-        problem_input = f.read()
 
-    solver = solve(problem_input)
+def _parse_args(day: str) -> tuple[str, list[int | str], bool, bool]:
+    default_input_path = f"inputs/{day}"
+    default_solution_path = f"solutions/{day}.json"
 
-    timer = Timer(f"Day {N}")
+    parser = argparse.ArgumentParser(
+        prog=f"python3 {day}.py",
+        description=f"Solves the problems 1 and 2 from Advent of Code, day {day}",
+        epilog="Good luck!",
+    )
+    parser.add_argument(
+        "--input",
+        default=default_input_path,
+        required=False,
+        help=f"Path to problem input",
+        type=str,
+    )
+    parser.add_argument(
+        "--solution",
+        default=default_solution_path,
+        required=False,
+        help=f"Path to json-formatted problem solutions",
+        type=str,
+    )
+    parser.add_argument(
+        "--timer",
+        action="store_true",
+        default=False,
+        required=False,
+        help="Print table of time taken for the two parts",
+    )
+    parser.add_argument(
+        "--no-assert",
+        action="store_true",
+        default=False,
+        required=False,
+        help="Do not assert that computed answer equals solution",
+    )
+
+    args = parser.parse_args()
+    problem_input = _read_from_file(args.input)
+    solutions_json = _read_from_file(args.solution) if not args.no_assert else "[null, null]"
+    solutions = json.loads(solutions_json)
+
+    return problem_input, solutions, not args.no_assert, args.timer
+
+
+def main_template(day: str, solve: Callable[[str], Iterator[int | str]]) -> None:
+    problem_input, solutions, with_assert, with_timer = _parse_args(day)
+
+    timer = Timer(f"Day {day}")
+    kwargs = {"timer": timer} if solve.__code__.co_argcount >= 2 else {}
+    solver = solve(problem_input, **kwargs)
+
     for part, expectation in zip([1, 2], solutions):
         with timer.time_block(f"Part {part}"):
             result = next(solver)
@@ -36,35 +77,34 @@ def main_template(
         timer.print_table()
 
 
-def _get_table_row(key, key_width, total, val):
+def _get_table_row(key: str, key_width: int, total: float, val: float) -> str:
     row_name = key.ljust(key_width)
     percentage = str(int(100 * val / total)).rjust(5) + "%"
     return f"{row_name} {percentage} - {val}"
 
 
 class Timer:
-    def __init__(self, title):
-
+    def __init__(self, title: str) -> None:
         self.title = title
         self.block_bins = {}
         self.function_bins = {}
 
     @contextmanager
-    def time_block(self, key):
+    def time_block(self, key: str) -> Iterator:
         if key not in self.block_bins:
             self.block_bins[key] = 0
         start = time()
         yield
         self.block_bins[key] += time() - start
 
-    def time_function(self, f):
+    def time_function(self, f: Callable[..., T]) -> Callable[..., T]:
         key = f.__name__
         if key in self.function_bins:
             n = sum(1 for k in self.function_bins if k.startswith(key))
             key += f":{n + 1}"
         self.function_bins[key] = 0
 
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> T:
             start = time()
             result = f(*args, **kwargs)
             self.function_bins[key] += time() - start
@@ -72,7 +112,7 @@ class Timer:
 
         return wrapper
 
-    def print_results(self):
+    def print_results(self) -> None:
         if self.block_bins:
             print("Blocks:")
             for key, val in self.block_bins.items():
@@ -84,7 +124,7 @@ class Timer:
         if not (self.block_bins or self.function_bins):
             print("No timer results")
 
-    def print_table(self):
+    def print_table(self) -> None:
         if not (self.block_bins or self.function_bins):
             print("No timer results")
             return
