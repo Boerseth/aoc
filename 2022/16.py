@@ -1,3 +1,6 @@
+START = "AA"
+
+
 def prune_nodes_with_no_pressure(graph, rewards):
     for node in list(graph.keys()):
         if rewards.get(node):
@@ -23,8 +26,6 @@ def prune_nodes_with_no_pressure(graph, rewards):
 
 
 def generate_graph_without_middle_steps(graph):
-    # TODO: Make this faster... It is currently the biggest time sink
-
     # Distance to neighbours becomes 2, because we assume that going there also
     # implies spending a minute to turn on the valve
     direct_graph = {key: {k: v + 1 for k, v in val.items()} for key, val in graph.items()}
@@ -74,7 +75,7 @@ def traverse_graph(direct_graph, valve_pressure, path, banned, cumulative_pressu
 
 def find_optimal_path_and_pressure(graph, valve_pressure, banned, time):
     max_pressure, optimal_path = 0, None
-    for pressure, path in traverse_graph(graph, valve_pressure, ["AA"], banned, 0, time):
+    for pressure, path in traverse_graph(graph, valve_pressure, [START], banned, 0, time):
         if max_pressure >= pressure:
             continue
         max_pressure = pressure
@@ -100,9 +101,42 @@ def solve(text, timer=None):
     yield max_pressure
 
     # For whatever reason, the gready approach works:
-    pressure1, path1 = find_optimal_path_and_pressure(graph, valve_pressure, [], 26)
-    pressure2, path2 = find_optimal_path_and_pressure(graph, valve_pressure, path1, 26)
-    yield pressure1 + pressure2
+    # pressure1, path1 = find_optimal_path_and_pressure(graph, valve_pressure, [], 26)
+    # pressure2, path2 = find_optimal_path_and_pressure(graph, valve_pressure, path1, 26)
+    # yield pressure1 + pressure2
+
+    # Make more robust:
+    # First find optimal path for single traveller within given
+    # time, and find the optimal path for other traveller given
+    # remaining nodes.
+    #
+    # Then, solve over again, but gradually ban nodes in path1
+    # for the first traveller. If len(path1) == N, then there
+    # will be 2 ** N such subsets to be banned.
+    # However, we might not have to explore all of them, as some
+    # subsets might contain previous ones, and be contained them-
+    # self by the avoided nodes in path that resulted:
+    #   banned_0 < banned_1 < avoided_0
+    # In those two conditions apply, then the optimal path from
+    # banned_1 will be the same as that from banned_0.
+    # This might reduce the number of partitions to check enough
+    # to make the problem solvable within a short time.
+    pressure1, unrestricted_path = find_optimal_path_and_pressure(graph, valve_pressure, [], 26)
+    pressure2, other_path = find_optimal_path_and_pressure(graph, valve_pressure, unrestricted_path, 26)
+
+    nodes = sorted(unrestricted_path)
+    banned_avoided_pressure = [(0, 0, pressure1 + pressure2)]
+    for i in range(2 ** len(nodes)):
+        if any(b & i == b and i & a == i for b, a, _ in banned_avoided_pressure):
+            continue
+        banned = [node for n, node in enumerate(nodes) if (1 << n) & i]
+        pressure1, path1 = find_optimal_path_and_pressure(graph, valve_pressure, banned, 26)
+        avoided = sum(2 ** n for n, node in enumerate(nodes) if node not in path1)
+        pressure2, path2 = find_optimal_path_and_pressure(graph, valve_pressure, path1, 26)
+        banned_avoided_pressure.append((i, avoided, pressure1 + pressure2))
+
+    pressures = [p for _, _, p in banned_avoided_pressure]
+    yield max(pressures)
 
 
 if __name__ == "__main__":
