@@ -105,7 +105,7 @@ def pivot_around_node(tree, node_id):
 
 
 def solve(text):
-    #text = TEST_INPUT
+    # text = TEST_INPUT
     tree = parse(text)
     yield tree["root"]["value"]
 

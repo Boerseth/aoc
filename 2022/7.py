@@ -7,7 +7,7 @@ def cd(path, destination):
     if destination == "/":
         return ROOT
     if destination == "..":
-        return path[:path.rfind("/")]
+        return path[: path.rfind("/")]
     return f"{path}/{destination}"
 
 

@@ -46,10 +46,16 @@ def generate_graph_without_middle_steps(graph):
                     # Subtract 1, as this is the distance for traversing dist1, but
                     # skipping the valve at `node`
                     new_distance = dist1 - 1 + dist2
-                    if neigh2 not in direct_graph[neigh1] or new_distance < direct_graph[neigh1][neigh2]:
+                    if (
+                        neigh2 not in direct_graph[neigh1]
+                        or new_distance < direct_graph[neigh1][neigh2]
+                    ):
                         direct_graph[neigh1][neigh2] = new_distance
                         next_updated_nodes.add(neigh1)
-                    if neigh1 not in direct_graph[neigh2] or new_distance < direct_graph[neigh2][neigh1]:
+                    if (
+                        neigh1 not in direct_graph[neigh2]
+                        or new_distance < direct_graph[neigh2][neigh1]
+                    ):
                         direct_graph[neigh2][neigh1] = new_distance
                         next_updated_nodes.add(neigh2)
         updated_nodes = next_updated_nodes
@@ -122,7 +128,9 @@ def solve(text, timer=None):
     # This might reduce the number of partitions to check enough
     # to make the problem solvable within a short time.
     pressure1, unrestricted_path = find_optimal_path_and_pressure(graph, valve_pressure, [], 26)
-    pressure2, other_path = find_optimal_path_and_pressure(graph, valve_pressure, unrestricted_path, 26)
+    pressure2, other_path = find_optimal_path_and_pressure(
+        graph, valve_pressure, unrestricted_path, 26
+    )
 
     nodes = sorted(unrestricted_path)
     banned_avoided_pressure = [(0, 0, pressure1 + pressure2)]
@@ -131,7 +139,7 @@ def solve(text, timer=None):
             continue
         banned = [node for n, node in enumerate(nodes) if (1 << n) & i]
         pressure1, path1 = find_optimal_path_and_pressure(graph, valve_pressure, banned, 26)
-        avoided = sum(2 ** n for n, node in enumerate(nodes) if node not in path1)
+        avoided = sum(2**n for n, node in enumerate(nodes) if node not in path1)
         pressure2, path2 = find_optimal_path_and_pressure(graph, valve_pressure, path1, 26)
         banned_avoided_pressure.append((i, avoided, pressure1 + pressure2))
 
