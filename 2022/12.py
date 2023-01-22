@@ -1,7 +1,4 @@
-def dijkstra(elavation, start, targets, graph):
-    R = len(elavation)
-    C = len(elavation[0])
-
+def dijkstra(height, start, targets, graph):
     distances = {start: 0}
     unvisited = {0: [start]}
     while not any(t in distances for t in targets):
@@ -17,50 +14,49 @@ def dijkstra(elavation, start, targets, graph):
     return next(distances[t] for t in targets if t in distances)
 
 
-def manhattan_distance(start, end):
-    r_start, c_start = start
-    r_end, c_end = end
-    return abs(r_start - r_end) + abs(c_start - c_end)
+def reachable(source, dest, height):
+    if source not in height or dest not in height:
+        return False
+    step = source - dest
+    if abs(step.real) + abs(step.imag) > 1:
+        return False
+    climb = height[dest] - height[source]
+    if climb > 1:
+        return False
+    return True
 
 
-def reachable(source, destination, elavation):
-    r_source, c_source = source
-    r_dest, c_dest = destination
-    return (
-        manhattan_distance(source, destination) == 1
-        and elavation[r_dest][c_dest] - elavation[r_source][c_source] <= 1
-    )
+def neighbours(z):
+    for dz in [1, -1, 1j, -1j]:
+        yield z + dz
 
 
-def neighbours(position, R, C):
-    r, c = position
-    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-        if 0 <= r + dr < R and 0 <= c + dc < C:
-            yield r + dr, c + dc
-
-
-def get_elavation(char):
+def get_height(char):
     match char:
-        case "S": return ord("a")
-        case "E": return ord("z")
-        case _: return ord(char)
+        case "S":
+            return ord("a")
+        case "E":
+            return ord("z")
+        case _:
+            return ord(char)
 
 
 def solve(text):
-    _map = [list(line) for line in text.strip().splitlines()]
-    R = len(_map)
-    C = len(_map[0])
-    rc_pairs = [(r, c) for r in range(R) for c in range(C)]
-    elavation = [[get_elavation(char) for char in row] for row in _map]
+    landscape = {
+        complex(r, c): char
+        for r, line in enumerate(text.strip().splitlines())
+        for c, char in enumerate(line)
+    }
+    height = {z: get_height(char) for z, char in landscape.items()}
+    start = next(z for z, char in landscape.items() if char == "S")
+    end = next(z for z, char in landscape.items() if char == "E")
 
-    start = next((r, c) for r, c in rc_pairs if _map[r][c] == "S")
-    end = next((r, c) for r, c in rc_pairs if _map[r][c] == "E")
-    graph = {p: [n for n in neighbours(p, R, C) if reachable(p, n, elavation)] for p in rc_pairs}
-    yield dijkstra(elavation, start, [end], graph)
+    graph = {p: [n for n in neighbours(p) if reachable(p, n, height)] for p in height}
+    yield dijkstra(height, start, [end], graph)
 
-    bottoms = [(r, c) for r, c in rc_pairs if _map[r][c] == "a"]
-    graph = {p: [n for n in neighbours(p, R, C) if reachable(n, p, elavation)] for p in rc_pairs}
-    yield dijkstra(elavation, end, bottoms, graph)
+    bottoms = [z for z, char in landscape.items() if char == "a"]
+    graph = {p: [n for n in neighbours(p) if reachable(n, p, height)] for p in height}
+    yield dijkstra(height, end, bottoms, graph)
 
 
 if __name__ == "__main__":
