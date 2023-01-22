@@ -19,7 +19,7 @@ def compare(l1, l2):
 
 
 def solve(text):
-    pairs = [[literal_eval(l) for l in pair.splitlines()]for pair in text.strip().split("\n\n")]
+    pairs = [[literal_eval(l) for l in pair.splitlines()] for pair in text.strip().split("\n\n")]
     yield sum(i for i, (left, right) in enumerate(pairs, 1) if False != compare(left, right))
 
     packets = [p for pair in pairs for p in pair]

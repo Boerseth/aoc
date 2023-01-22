@@ -63,7 +63,7 @@ Finally, compute the final `neighbours` map in coordinates corresponding to the
 
 def get_size(spaces):
     N = int((len(spaces) // 6) ** 0.5)
-    assert 6 * N ** 2 == len(spaces)
+    assert 6 * N**2 == len(spaces)
     return N
 
 

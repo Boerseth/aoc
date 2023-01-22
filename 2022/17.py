@@ -44,15 +44,14 @@ ROCKS_BY_ROW = [
     ],
 ]
 ROCKS = [
-    sum(row << (OFFSET + i * BYTE) for i, row in enumerate(reversed(rock)))
-    for rock in ROCKS_BY_ROW
+    sum(row << (OFFSET + i * BYTE) for i, row in enumerate(reversed(rock))) for rock in ROCKS_BY_ROW
 ]
 
 
 def chamber_to_string(chamber):
     lines = []
     while chamber:
-        lines.append("{0:08b}".format(chamber % 2 ** BYTE).replace("1", "#").replace("0", "."))
+        lines.append("{0:08b}".format(chamber % 2**BYTE).replace("1", "#").replace("0", "."))
         chamber >>= BYTE
     return "\n".join(reversed(lines))
 
@@ -90,6 +89,7 @@ def get_n_rocks(N):
         yield ROCKS[n % 5]
         if n == N - 1:
             break
+
 
 def shift_rows(rock, n):
     if n > 0:

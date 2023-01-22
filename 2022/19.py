@@ -50,11 +50,15 @@ def find_max_geodes(blueprint, resources, robots, next_robot, time_left, max_so_
 
     if not can_build_next_robot:
         # Todo: Compute how many minutes until can_build, then just skip to that
-        return find_max_geodes(blueprint, [*resources], [*robots], next_robot, time_left - 1, max_so_far)
+        return find_max_geodes(
+            blueprint, [*resources], [*robots], next_robot, time_left - 1, max_so_far
+        )
 
     resources, robots = build_robot(blueprint, resources, robots, next_robot)
     for next_next_robot in get_available_strategies(blueprint, robots, time_left):
-        geode_count = find_max_geodes(blueprint, [*resources], [*robots], next_next_robot, time_left - 1, max_so_far)
+        geode_count = find_max_geodes(
+            blueprint, [*resources], [*robots], next_next_robot, time_left - 1, max_so_far
+        )
         if max_so_far is None or (geode_count is not None and max_so_far < geode_count):
             max_so_far = geode_count
     return max_so_far

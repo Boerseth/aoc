@@ -43,7 +43,8 @@ def explore(blizzards, open_spaces, R, C):
     propagate_blizzards(blizzards, R, C)
     open_spaces = {n for s in open_spaces for n in neighbourhood(R, C, *s)}
     open_spaces = {
-        (r, c) for r, c in open_spaces
+        (r, c)
+        for r, c in open_spaces
         if (r != R and c not in blizzards[UP][r])
         and (r != R and c not in blizzards[DOWN][r])
         and (c != C and r not in blizzards[LEFT][c])
