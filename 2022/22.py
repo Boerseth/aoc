@@ -67,10 +67,8 @@ def get_size(spaces):
     return N
 
 
-def referance_frame(position, size):
-    origin = complex(int(position.real) // size, int(position.imag) // size) * size
-    offset = complex(int(position.real) % size, int(position.imag) % size)
-    return origin, offset
+def modulo_cube_face(position, size):
+    return complex(int(position.real) % size, int(position.imag) % size)
 
 
 def get_neighbour_map_2(spaces):
@@ -84,34 +82,32 @@ def get_neighbour_map_2(spaces):
     }
 
     corners = []
-    neighbours = {}
+    neighbours = {pos: {} for pos in spaces}
     for position in spaces:
-        origin, offset = referance_frame(position, N)
-        neighbours[origin, offset] = {}
+        offset = modulo_cube_face(position, N)
         for step in [1, -1, 1j, -1j]:
             neigh_position = position + step
             if neigh_position not in spaces:
                 # On the edge; stitch together later
                 continue
-            neigh_origin, neigh_offset = referance_frame(neigh_position, N)
-            neighbours[origin, offset][step] = (neigh_origin, neigh_offset, -step)
+            neighbours[position][step] = (neigh_position, -step)
         if offset in corner_neighbour_directions:
-            corners.append((origin, offset))
+            corners.append(position)
 
     # Stitch together edges
-    while any(len(neighbours[point_on_cube]) != 4 for point_on_cube in corners):
-        for origin, corner in corners:
-            neighs = neighbours[origin, corner]
+    while any(len(neighbours[corner]) != 4 for corner in corners):
+        for position in corners:
+            neighs = neighbours[position]
             # Looking for a corner neighbouring two other corners,
             # but the two other corners don't know about eachother yet.
             if len(neighs) != 4:
                 continue
-            step_to_left, step_to_right = corner_neighbour_directions[corner]
-            origin_left, corner_left, step_from_left = neighs[step_to_left]
-            origin_right, corner_right, step_from_right = neighs[step_to_right]
-            if len(neighbours[origin_left, corner_left]) == 4:
-                continue
-            if len(neighbours[origin_right, corner_right]) == 4:
+
+            step_to_left, step_to_right = corner_neighbour_directions[modulo_cube_face(position, N)]
+            neigh_left, step_from_left = neighs[step_to_left]
+            neigh_right, step_from_right = neighs[step_to_right]
+            # Make sure the sides aren't already stitched together
+            if len(neighbours[neigh_left]) == 4 or len(neighbours[neigh_right]) == 4:
                 continue
 
             # Find the direction from each of the two neighbour corners to the other
@@ -121,24 +117,18 @@ def get_neighbour_map_2(spaces):
 
             # Stitch together the whole edge
             for n in range(N):
-                offset_left = corner_left - n * step_from_left
-                offset_right = corner_right - n * step_from_right
-                point_left = (origin_left, offset_left)
-                point_right = (origin_right, offset_right)
-                neighbours[point_left][step_left_to_right] = (*point_right, step_right_to_left)
-                neighbours[point_right][step_right_to_left] = (*point_left, step_left_to_right)
+                point_left = neigh_left - n * step_from_left
+                point_right = neigh_right - n * step_from_right
+                neighbours[point_left][step_left_to_right] = (point_right, step_right_to_left)
+                neighbours[point_right][step_right_to_left] = (point_left, step_left_to_right)
 
-    return {
-        (origin + offset, step): (neigh_origin + neigh_offset, neigh_step)
-        for (origin, offset), neighs in neighbours.items()
-        for step, (neigh_origin, neigh_offset, neigh_step) in neighs.items()
-    }
+    return neighbours
 
 
 def get_neighbour_map_1(spaces):
     N = get_size(spaces)
 
-    neighbours = {}
+    neighbours = {pos: {} for pos in spaces}
     for pos in spaces:
         for step in [1, -1, 1j, -1j]:
             if pos + step in spaces:
@@ -148,7 +138,7 @@ def get_neighbour_map_1(spaces):
                 while pos - N * i * step in spaces:
                     i += 1
                 neigh = pos - (N * i - 1) * step
-            neighbours[pos, step] = (neigh, -step)
+            neighbours[pos][step] = (neigh, -step)
     return neighbours
 
 
@@ -183,7 +173,7 @@ def traverse(pos, step, path, spaces, neighbours):
             step *= {"R": 1j, "L": -1j}[instruction]
         else:
             for _ in range(instruction):
-                neigh, negative_step = neighbours[pos, step]
+                neigh, negative_step = neighbours[pos][step]
                 if spaces[neigh] == "#":
                     break
                 pos = neigh
