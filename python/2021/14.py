@@ -29,9 +29,3 @@ def solve(text):
     yield max(part_1_count) - min(part_1_count)
     part_2_count = generate_element_count(frequencies, pair_sources, 40)
     yield max(part_2_count) - min(part_2_count)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("14", solve)

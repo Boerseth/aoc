@@ -53,9 +53,3 @@ def solve(text):
     outer_packet = parse(BitFeed(f"{int(text.strip(), 16):>08b}"))
     yield sum(collect_version_numbers(outer_packet))
     yield evaluate(outer_packet)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("16", solve)

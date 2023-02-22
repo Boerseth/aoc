@@ -48,9 +48,3 @@ def solve(text):
     # print("Part 1:", len(spawn(initial_state, 80)))
     yield smart_spawn(initial_state, 80)
     yield smart_spawn(initial_state, 256)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("6", solve)

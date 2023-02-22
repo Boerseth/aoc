@@ -67,9 +67,3 @@ def solve(text):
 
     yield magnitude(snail_sum)
     yield max(magnitude(add_pairs(p1, p2)) for p1 in pairs for p2 in pairs)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("18", solve)

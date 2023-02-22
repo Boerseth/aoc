@@ -26,9 +26,3 @@ def solve(text):
     N = 1 + max(x for x, _ in coordinates)
     M = 1 + max(y for _, y in coordinates)
     yield "\n" + "\n".join("".join("#" if (x, y) in coordinates else " " for x in range(N)) for y in range(M))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("13", solve)

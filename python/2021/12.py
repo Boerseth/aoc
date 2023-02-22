@@ -34,9 +34,3 @@ def solve(text):
             movement_choices[cave_2].add(cave_1)
     yield find_number_of_paths("start", movement_choices, [], 0)
     yield find_number_of_paths("start", movement_choices, [], 1)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("12", solve)

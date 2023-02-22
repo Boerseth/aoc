@@ -77,9 +77,3 @@ def solve(text):
         for r in range(5 * R) for c in range(5 * C)
     }
     yield find_shortest_path_length(risk_level_2, 5 * R, 5 * C)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("15", solve)

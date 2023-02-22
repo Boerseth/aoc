@@ -27,12 +27,6 @@ def solve(text):
     yield len(enhance_infinite_flipper(image, 2))
     yield len(enhance_infinite_flipper(image, 50))
 
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("20", solve)
-
 """
 quit()
 

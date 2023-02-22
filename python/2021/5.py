@@ -29,9 +29,3 @@ def solve(text):
     ]
     yield len(find_line_overlaps([l for l in lines if not is_diagonal(*l)]))
     yield len(find_line_overlaps(lines))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("5", solve)

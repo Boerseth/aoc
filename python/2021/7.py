@@ -11,9 +11,3 @@ def solve(text):
 
     yield min(cost_1(i) for i in range(low, high + 1))
     yield min(cost_2(i) for i in range(low, high + 1))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("7", solve)

@@ -269,9 +269,3 @@ def solve(text):
         for r2 in scanner_positions
     )
     yield metro_metric
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("19", solve)

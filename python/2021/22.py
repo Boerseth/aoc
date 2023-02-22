@@ -100,10 +100,3 @@ def solve(text):
 
     yield reboot_core(init_boxes)
     yield reboot_core(boxes)
-
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("22", solve)

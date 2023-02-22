@@ -32,9 +32,3 @@ def solve(text):
 
     basin_sizes = sorted([len(get_basin(heights, y, x)) for y, x in lowpoints])
     yield basin_sizes[-1] * basin_sizes[-2] * basin_sizes[-3]
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("9", solve)

@@ -44,9 +44,3 @@ def solve(text):
         for line in lines
     )
     yield sum(interpret(line) for line in lines)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("8", solve)

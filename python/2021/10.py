@@ -36,9 +36,3 @@ def solve(text):
     incomplete_lines = [line for line in data if find_corruption_score(line) == 0]
     sorted_scores = sorted([find_completion_score(line) for line in incomplete_lines])
     yield sorted_scores[len(sorted_scores) // 2]
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("10", solve)

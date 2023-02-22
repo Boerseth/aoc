@@ -65,12 +65,6 @@ def solve(text):
     )
     yield max(player_1_wins, player_2_wins)
 
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("21", solve)
-
 """
 
 quit()

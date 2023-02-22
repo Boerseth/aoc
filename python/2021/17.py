@@ -29,12 +29,6 @@ def solve(text):
     yield len(hits)
 
 
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("17", solve)
-
-
 # import matplotlib.pyplot as plt
 # plt.imshow(heatmap)
 # plt.show()

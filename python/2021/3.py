@@ -24,9 +24,3 @@ def solve(text):
     filtered_by_most_common = filter_data_bitwise(data, 2 ** (N - 1))
     filtered_by_least_common = filter_data_bitwise(data, 2 ** (N - 1), filter_by_most_common=False)
     yield filtered_by_most_common[0] * filtered_by_least_common[0]
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("3", solve)

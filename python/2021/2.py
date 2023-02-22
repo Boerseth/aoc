@@ -15,9 +15,3 @@ def solve(text):
 
     answer = sum(z.real * (1 + 1j * aim) for z, aim in zip(steps, aims))
     yield int(answer.real * answer.imag)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("2", solve)

@@ -52,9 +52,3 @@ def solve(text):
     octopodes = [[int(c) for c in line.strip()] for line in text.splitlines()]
     yield count_flashes_over_time_steps([[o for o in os] for os in octopodes], 100)
     yield find_first_synchronization_time([[o for o in os] for os in octopodes])
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("11", solve)

@@ -88,9 +88,3 @@ def solve(text):
 
     yield find_extreme_winning_score(bingo_boards, set(), bingo_numbers, True)
     yield find_extreme_winning_score(bingo_boards, set(), bingo_numbers, False)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("4", solve)
