@@ -1,5 +1,4 @@
-lsoc = [line.strip() for line in open("inputs/8", "r").readlines()]
-
+"""Matchsticks"""
 
 def memory(line):
     assert line[0] == line[-1] == '"'
@@ -25,9 +24,7 @@ def escape(line):
     return f'"{escaped_line}"'
 
 
-# Part 1:
-print("Part 1:", sum(len(line) - memory(line) for line in lsoc))
-
-
-# Part 2:
-print("Part 2:", sum(len(escape(line)) - len(line) for line in lsoc))
+def solve(text):
+    lsoc = [line.strip() for line in text.splitlines()]
+    yield sum(len(line) - memory(line) for line in lsoc)
+    yield sum(len(escape(line)) - len(line) for line in lsoc)

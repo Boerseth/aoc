@@ -1,4 +1,4 @@
-
+"""Doesn't He Have Intern-Elves For This?"""
 
 def is_nice_1(s):
     if not 3 <= sum(1 for c in s if c in "aeiou"):
@@ -18,21 +18,7 @@ def is_nice_2(s):
     return True
 
 
-
-
-def solve():
-    with open("inputs/5", "r") as f:
-        text = f.readlines()
+def solve(text):
+    text = text.splitlines()
     yield len(list(filter(is_nice_1, text)))
     yield len(list(filter(is_nice_2, text)))
-
-
-def solutions():
-    yield 258
-    yield 53
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template(solve, solutions)

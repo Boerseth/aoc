@@ -1,3 +1,5 @@
+"""The Ideal Stocking Stuffer"""
+
 import hashlib
 
 
@@ -8,19 +10,7 @@ def miner(seed, n):
     return nonce
 
 
-def solve():
-    with open("inputs/4", "r") as f:
-        text = f.readline().strip()
+def solve(text):
+    text = text.strip()
     yield miner(text, 5)
     yield miner(text, 6)
-
-
-def solutions():
-    yield 346386
-    yield 9958218
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template(solve, solutions)
