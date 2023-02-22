@@ -1,9 +1,4 @@
-octopodes = [[int(c) for c in line.strip()] for line in open("input_11", "r").readlines()]
-R = len(octopodes)
-C = len(octopodes[0])
-
-
-def neighbours(r, c):
+def neighbours(r, c, R, C):
     for dr, dc in [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]:
         if 0 <= r + dr < R and 0 <= c + dc < C:
             yield r + dr, c + dc
@@ -14,6 +9,8 @@ def count_flashes(has_been_flashed):
 
 
 def simulate_octopodes(octs):
+    R = len(octs)
+    C = len(octs[0])
     has_been_flashed = [[False for _ in range(R)] for __ in range(C)]
 
     for r in range(R):
@@ -25,7 +22,7 @@ def simulate_octopodes(octs):
         for r in range(R):
             for c in range(C):
                 if octs[r][c] == 10 and not has_been_flashed[r][c]:
-                    for rr, cc in neighbours(r, c):
+                    for rr, cc in neighbours(r, c, R, C):
                         octs[rr][cc] = min(octs[rr][cc] + 1, 10)
                     has_been_flashed[r][c] = True
     for r in range(R):
@@ -44,14 +41,20 @@ def count_flashes_over_time_steps(octs, number_of_time_steps):
 
 
 def find_first_synchronization_time(octs):
-    all_equal = all(octs[0][0] == octopus for line in octs for octopus in line)
     time = 0
-    while not all_equal:
+    while not all(octs[0][0] == octopus for line in octs for octopus in line):
         octs, _ = simulate_octopodes(octs)
-        all_equal = all(octs[0][0] == octopus for line in octs for octopus in line)
         time += 1
     return time
 
 
-print("Part 1:", count_flashes_over_time_steps([[o for o in os] for os in octopodes], 100))
-print("Part 2:", find_first_synchronization_time([[o for o in os] for os in octopodes]))
+def solve(text):
+    octopodes = [[int(c) for c in line.strip()] for line in text.splitlines()]
+    yield count_flashes_over_time_steps([[o for o in os] for os in octopodes], 100)
+    yield find_first_synchronization_time([[o for o in os] for os in octopodes])
+
+
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template("11", solve)

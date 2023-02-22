@@ -1,7 +1,3 @@
-lines = [
-    [int(num) for xy in line.split(" -> ") for num in xy.split(",")]
-    for line in open("input_5", "r").readlines()
-]
 
 
 def get_vent_locations_on_line(x1, y1, x2, y2):
@@ -26,5 +22,16 @@ def is_diagonal(x1, y1, x2, y2):
     return x1 != x2 and y1 != y2
 
 
-print("Part 1:", len(find_line_overlaps([l for l in lines if not is_diagonal(*l)])))
-print("Part 2:", len(find_line_overlaps(lines)))
+def solve(text):
+    lines = [
+        [int(num) for xy in line.split(" -> ") for num in xy.split(",")]
+        for line in text.splitlines()
+    ]
+    yield len(find_line_overlaps([l for l in lines if not is_diagonal(*l)]))
+    yield len(find_line_overlaps(lines))
+
+
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template("5", solve)

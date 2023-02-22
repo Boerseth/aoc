@@ -1,11 +1,5 @@
-lines = [line.strip() for line in open("input_8", "r").readlines()]
 
 
-# Part 1
-print("Part 1:", sum(sum(1 for word in line.split(" | ")[1].split() if len(word) in [2, 3, 4, 7]) for line in lines))
-
-
-# Part 2
 def interpret(line):
     digits = line.split(" | ")[0].split()
 
@@ -18,7 +12,7 @@ def interpret(line):
     three = [d for d in two_three_five if all(s not in one for s in [c for c in eight if c not in d])].pop()
     two = [d for d in two_three_five if sorted(list({c for c in d + four})) == sorted(list(c for c in eight))].pop()
     five = [d for d in two_three_five if d not in [two, three]].pop()
-    
+
     zero_six_nine = [d for d in digits if len(d) == 6]
     nine = [d for d in zero_six_nine if [s for s in eight if s not in d].pop() not in four].pop()
     zero_six = [d for d in zero_six_nine if d != nine]
@@ -43,4 +37,16 @@ def interpret(line):
         for d in line.split(" | ")[1].split()
     ))
 
-print("Part 2:", sum(interpret(line) for line in lines))
+def solve(text):
+    lines = [line.strip() for line in text.splitlines()]
+    yield sum(
+        sum(1 for word in line.split(" | ")[1].split() if len(word) in [2, 3, 4, 7])
+        for line in lines
+    )
+    yield sum(interpret(line) for line in lines)
+
+
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template("8", solve)

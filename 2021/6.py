@@ -1,10 +1,3 @@
-test_data = """3,4,3,1,2"""
-test_initial_state = [int(num) for num in test_data.split(",")]
-data = open("input_6", "r").readline()
-initial_state = [int(num) for num in data.split(",")]
-
-
-# Part 1
 def next_timer_state(timer):
     if timer >= 7:
         return timer - 1
@@ -20,10 +13,6 @@ def spawn(timers, days_to_go):
     )
 
 
-print(len(spawn(initial_state, 80)))
-
-
-# Part 2
 # Off-by-one is a bitch, so take these recursion formulae with a fistful of salt
 # P(i, d) = | 1 if i >= d
 #           | else P(0, d-1)
@@ -54,32 +43,14 @@ def smart_spawn(lanternfish_timers, days_to_go):
     return sum(size_of_family_new(fish, days_to_go) for fish in lanternfish_timers)
 
 
-print(smart_spawn(initial_state, 256))
+def solve(text):
+    initial_state = [int(num) for num in text.strip().split(",")]
+    # print("Part 1:", len(spawn(initial_state, 80)))
+    yield smart_spawn(initial_state, 80)
+    yield smart_spawn(initial_state, 256)
 
 
+if __name__ == "__main__":
+    from helpers import main_template
 
-def smmm_spawn(timer_counts, days_to_go):
-    if days_to_go <= 0:
-        return timer_counts
-    print(days_to_go, sum(count for count in timer_counts.values()))
-    return smmm_spawn(
-        {
-            **{8: timer_counts[0]},
-            **{max(timer - 1, (timer - 1) % 7): count for timer, count in timer_counts.items()},
-        },
-        days_to_go - 1,
-    )
-
-
-def get_population_growth(lanternfish_timers, days_to_go):
-    timer_counts = {i: 0 for i in range(9)}
-    for timer in lanternfish_timers:
-        timer_counts[timer] += 1
-    return sum(value for value in smmm_spawn(timer_counts, days_to_go).values())
-
-
-print(get_population_growth(initial_state, 256))
-
-
-
-
+    main_template("6", solve)

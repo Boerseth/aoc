@@ -1,52 +1,42 @@
-cave_system = [line.strip().split("-") for line in open("input_12", "r").readlines()]
-movement_choices = {cave: set() for cave in {cave for edge in cave_system for cave in edge}}
-for cave_1, cave_2 in cave_system:
-    if cave_2 != "start":
-        movement_choices[cave_1].add(cave_2)
-    if cave_1 != "start":
-        movement_choices[cave_2].add(cave_1)
-
-
-def should_use_updated_map(next_position, visited, can_revisit_small):
-    if not can_revisit_small:
-        return True
-    if next_position in visited and next_position.islower():
-        return True
-    return False
-
-
 cache = {}
-def find_number_of_paths(position, move_choice_map, visited, can_revisit_small):
-    key = (position, "".join(sorted(visited)), can_revisit_small)
+def find_number_of_paths(position, move_choices, visited, permitted_small_revisits):
+    key = (position, "".join(sorted(visited)), permitted_small_revisits)
     if key in cache:
         return cache[key]
 
-    assert visited[-1] == position
+    small_revisits = sum(visited.count(cave) - 1 for cave in set(visited) if cave.islower())
+    if position.islower() and position in visited and small_revisits == permitted_small_revisits:
+        return 0
+
     if position == "end":
         return 1
 
     number_of_paths = 0
-    for next_position in move_choice_map[position]:
-        if should_use_updated_map(next_position, visited, can_revisit_small):
-            next_can_revisit_small = False
-            next_move_choice_map = {
-                cave: {c for c in choices if c not in visited or c.isupper()}
-                for cave, choices in move_choice_map.items()
-            }
-        else:
-            next_can_revisit_small = can_revisit_small
-            next_move_choice_map = move_choice_map
-
+    for next_position in move_choices[position]:
         number_of_paths += find_number_of_paths(
             next_position,
-            next_move_choice_map,
-            visited + [next_position],
-            next_can_revisit_small,
+            move_choices,
+            visited + [position],
+            permitted_small_revisits,
         )
     cache[key] = number_of_paths
 
     return cache[key]
 
 
-print("Part 1:", find_number_of_paths("start", movement_choices, ["start"], False))
-print("Part 2:", find_number_of_paths("start", movement_choices, ["start"], True))
+def solve(text):
+    cave_system = [line.strip().split("-") for line in text.splitlines()]
+    movement_choices = {cave: set() for cave in {cave for edge in cave_system for cave in edge}}
+    for cave_1, cave_2 in cave_system:
+        if cave_2 != "start":
+            movement_choices[cave_1].add(cave_2)
+        if cave_1 != "start":
+            movement_choices[cave_2].add(cave_1)
+    yield find_number_of_paths("start", movement_choices, [], 0)
+    yield find_number_of_paths("start", movement_choices, [], 1)
+
+
+if __name__ == "__main__":
+    from helpers import main_template
+
+    main_template("12", solve)
