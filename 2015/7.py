@@ -1,4 +1,4 @@
-instructions = [line.strip().split(" -> ") for line in open("input_7", "r").readlines()]
+instructions = [line.strip().split(" -> ") for line in open("inputs/7", "r").readlines()]
 
 
 # The keys of this dict are the wire-names, and its values will be their signal.

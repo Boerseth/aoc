@@ -2,7 +2,7 @@ def parse(line):
     *command, coords_1, _, coords_2 = line.split()
     return " ".join(command), *map(int, coords_1.split(",")), *map(int, coords_2.split(","))
 
-directions = [parse(line) for line in open("input_6", "r").readlines()]
+directions = [parse(line) for line in open("inputs/6", "r").readlines()]
 
 
 # Part 1
