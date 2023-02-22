@@ -1,3 +1,5 @@
+"""Monkey Map"""
+
 INITIAL_DIRECTION = 1  # rightward
 
 
@@ -193,9 +195,3 @@ def solve(text):
     start, step = get_start(spaces)
     yield compute_password(*traverse(start, step, path, spaces, get_neighbour_map_1(spaces)))
     yield compute_password(*traverse(start, step, path, spaces, get_neighbour_map_2(spaces)))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("22", solve)

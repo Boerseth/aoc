@@ -1,3 +1,5 @@
+"""Blizzard Basin"""
+
 UP = "^"
 DOWN = "v"
 LEFT = "<"
@@ -73,9 +75,3 @@ def solve(text):
     steps += count_minutes(blizzards, R, C, END, START)
     steps += count_minutes(blizzards, R, C, START, END)
     yield steps
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("24", solve)

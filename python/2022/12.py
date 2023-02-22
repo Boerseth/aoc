@@ -1,3 +1,5 @@
+"""Hill Climbing Algorithm"""
+
 def dijkstra(height, start, targets, graph):
     distances = {start: 0}
     unvisited = {0: [start]}
@@ -57,9 +59,3 @@ def solve(text):
     bottoms = [z for z, char in landscape.items() if char == "a"]
     graph = {p: [n for n in neighbours(p) if reachable(n, p, height)] for p in height}
     yield dijkstra(height, end, bottoms, graph)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("12", solve)

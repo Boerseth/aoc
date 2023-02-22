@@ -1,3 +1,5 @@
+"""Full of Hot Air"""
+
 SNAFU = "=-012"
 
 
@@ -22,9 +24,3 @@ def snafu_to_decimal(snafu):
 def solve(text):
     yield decimal_to_snafu(sum(map(snafu_to_decimal, text.splitlines())))
     yield None
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("25", solve)

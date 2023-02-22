@@ -1,3 +1,5 @@
+"""Boiling Boulders"""
+
 def neighbours(r):
     x, y, z = r
     for dc in [-1, 1]:
@@ -31,9 +33,3 @@ def solve(text):
 
     outer_shell = find_outer_shell(cubes)
     yield sum(1 for s in outer_shell for n in neighbours(s) if n in cubes)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("18", solve)

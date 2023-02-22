@@ -1,3 +1,5 @@
+"""Monkey in the Middle"""
+
 def parse_monkey(monkey_text):
     lines = list(map(str.strip, monkey_text.splitlines()))
     return {
@@ -50,9 +52,3 @@ def monkey_business(text, round_count, relief):
 def solve(text):
     yield monkey_business(text, 20, 3)
     yield monkey_business(text, 10_000, 1)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("11", solve)

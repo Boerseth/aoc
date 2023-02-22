@@ -1,3 +1,5 @@
+"""Monkey Math"""
+
 def new_node(name):
     return {
         "name": name,
@@ -112,9 +114,3 @@ def solve(text):
     pivot_around_node(tree, "humn")
     set_node_value(tree, "humn")
     yield tree["humn"]["value"]
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("21", solve)

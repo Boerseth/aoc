@@ -1,3 +1,5 @@
+"""Rucksack Reorganization"""
+
 def priority(item: str) -> int:
     if item >= "a":
         return ord(item) + 1 - ord("a")
@@ -14,9 +16,3 @@ def solve(text: str) -> None:
 
     yield sum_intersections((r[: len(r) // 2], r[len(r) // 2 :]) for r in rucksacks)
     yield sum_intersections(zip(*[rucksacks[i::3] for i in [0, 1, 2]]))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("3", solve)

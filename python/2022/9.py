@@ -1,3 +1,5 @@
+"""Rope Bridge"""
+
 from typing import Iterable
 
 
@@ -30,9 +32,3 @@ def solve(text) -> Iterable[int]:
         ropes.append([k + s for k, s in zip(ropes[-1], steps)])
     yield len(set(knots[1] for knots in ropes))
     yield len(set(knots[N - 1] for knots in ropes))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("9", solve)

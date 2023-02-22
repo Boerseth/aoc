@@ -1,3 +1,5 @@
+"""Supply Stacks"""
+
 def parse_diagram(diagram_text):
     diagram_lines = diagram_text.splitlines()[::-1]
     return ["".join(stack).strip() for stack in list(zip(*diagram_lines))[1::4]]
@@ -24,9 +26,3 @@ def rearrange(stacks, moves, move_multiple=False):
 def solve(text):
     yield "".join(stack[-1] for stack in rearrange(*parse(text), False))
     yield "".join(stack[-1] for stack in rearrange(*parse(text), True))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("5", solve)

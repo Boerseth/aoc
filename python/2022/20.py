@@ -1,3 +1,5 @@
+"""Grove Positioning System"""
+
 def mix(numbers, indices):
     N = len(numbers)
     for i, number in enumerate(numbers):
@@ -25,9 +27,3 @@ def solve(text):
     for _ in range(10):
         indices = mix(numbers, indices)
     yield sum(find_coordinates(numbers, indices))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("20", solve)

@@ -1,3 +1,5 @@
+"""Pyroclastic Flow"""
+
 TEST_INPUT = ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>"
 BYTE = 8
 
@@ -206,9 +208,3 @@ def solve(text):
     rep_mod = (x - p) % T
     h_p_plus_mod = h(p + rep_mod)
     yield h_p_plus_mod + dh_rep * rep_num
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("17", solve)

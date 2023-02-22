@@ -1,3 +1,5 @@
+"""Beacon Exclusion Zone"""
+
 def parse_coords(string: str) -> complex:
     coords = string.split(" at ")[1].split(", ")
     x = int(coords[0].split("=")[1])
@@ -112,9 +114,3 @@ def solve(text):
     # assert 0 <= beacon_location.real <= limit and 0 <= beacon_location.imag <= limit
     tuning_frequency = int(beacon_location.real * limit + beacon_location.imag)
     yield tuning_frequency
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("15", solve)

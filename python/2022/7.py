@@ -1,3 +1,5 @@
+"""No Space Left On Device"""
+
 ROOT = ""
 DIR, FILE = "dir", "file"
 SMALL_SIZE, TOTAL_SPACE, REQUIRED_SPACE = 100000, 70000000, 30000000
@@ -51,9 +53,3 @@ def solve(text):
     allowed_space = TOTAL_SPACE - REQUIRED_SPACE
     to_be_deleted = filesystem[ROOT]["size"] - allowed_space
     yield min(size for size in directory_sizes if size >= to_be_deleted)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("7", solve)

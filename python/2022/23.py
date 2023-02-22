@@ -1,3 +1,5 @@
+"""Unstable Diffusion"""
+
 def neighbours(z):
     for dz in [1, 1 + 1j]:
         for rot in [1, 1j, -1, -1j]:
@@ -70,9 +72,3 @@ def solve(text):
         round_count += 1
         elves, moves = disperse(elves)
     yield round_count
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("23", solve)

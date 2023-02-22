@@ -1,3 +1,5 @@
+"""Cathode-Ray Tube"""
+
 def simulate(instructions):
     X = 1
     cycle = 0
@@ -50,9 +52,3 @@ MESSAGE_3 = """
 def create(message):
     message = "".join(message.split("\n"))
     X = 1
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("10", solve)

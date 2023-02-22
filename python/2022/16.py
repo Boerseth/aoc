@@ -1,3 +1,5 @@
+"""Proboscidea Volcanium"""
+
 START = "AA"
 
 
@@ -145,9 +147,3 @@ def solve(text, timer=None):
 
     pressures = [p for _, _, p in banned_avoided_pressure]
     yield max(pressures)
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("16", solve)

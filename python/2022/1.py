@@ -1,3 +1,5 @@
+"""Calorie Counting"""
+
 def get_top_n(numbers, n):
     top_group = numbers[:1]
     for number in numbers[1:]:
@@ -19,9 +21,3 @@ def solve(text):
     # yield sum(sorted_totals[-3:])
     yield sum(get_top_n(totals, 1))
     yield sum(get_top_n(totals, 3))
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("1", solve)

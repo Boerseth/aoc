@@ -1,3 +1,5 @@
+"""Not Enough Minerals"""
+
 def have_enough(robot_type, robot_count, blueprint):
     return all(recipe[robot_type] <= robot_count for recipe in blueprint)
 
@@ -100,9 +102,3 @@ def solve(text):
     for bp in blueprints[:3]:
         product *= find_max_geodes_per_init_cond(bp["bp"], 32)
     yield product
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("19", solve)

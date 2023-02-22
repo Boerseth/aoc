@@ -1,3 +1,5 @@
+"""Regolith Reservoir"""
+
 from ast import literal_eval
 
 
@@ -49,9 +51,3 @@ def solve(text):
     while sand_path:
         grains_of_sand += flow(cave, sand_path, y_max + 2)
     yield grains_of_sand
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template(14, solve)

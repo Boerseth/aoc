@@ -1,3 +1,5 @@
+"""Distress Signal"""
+
 from ast import literal_eval
 
 
@@ -26,9 +28,3 @@ def solve(text):
     position_1 = 1 + sum(1 for p in packets if False != compare(p, [[2]]))
     position_2 = 2 + sum(1 for p in packets if False != compare(p, [[6]]))
     yield position_1 * position_2
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("13", solve)
