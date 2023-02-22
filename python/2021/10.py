@@ -1,3 +1,5 @@
+"""Syntax Scoring"""
+
 BRACKET_MATCH = {")": "(", "]": "[", "}": "{", ">": "<"}
 
 

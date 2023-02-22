@@ -1,3 +1,5 @@
+"""Smoke Basin"""
+
 def neighbours(y, x, N, M):
     for d in [-1, 1]:
         if 0 <= y + d < N:

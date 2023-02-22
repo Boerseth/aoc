@@ -1,3 +1,5 @@
+"""Extended Polymerization"""
+
 # because "AAA".count("AA") == 1 ...
 def properly_count_substring(string, substring):
     return sum(1 for i in range(len(string)) if string[i:].startswith(substring))

@@ -1,3 +1,5 @@
+"""Binary Diagnostic"""
+
 def filter_data_bitwise(filtered_data, filter_bit, filter_by_most_common=True):
     if len(filtered_data) == 1 or filter_bit == 0:
         return filtered_data

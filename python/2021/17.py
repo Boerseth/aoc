@@ -1,3 +1,5 @@
+"""Trick Shot"""
+
 def solve(text):
     _, target = text.split(": ")
     xmin, xmax, ymin, ymax = [int(v) for word in target.split(", ") for v in word[2:].split("..")]

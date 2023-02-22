@@ -1,3 +1,5 @@
+"""Beacon Scanner"""
+
 import time
 from dataclasses import dataclass
 from math import log2

@@ -1,3 +1,5 @@
+"""Chiton"""
+
 def find_shortest_path_length(risk_level, R, C):
     path_length = {(0, 0): 0}
 

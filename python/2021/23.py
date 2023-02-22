@@ -1,3 +1,5 @@
+"""Amphipod"""
+
 ROOM_NUMBER = {"A": 3, "B": 5, "C": 7, "D": 9}
 POSITIONS = [
     *[(1, i) for i in range(1, 12)],

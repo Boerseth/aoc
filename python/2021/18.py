@@ -1,3 +1,5 @@
+"""Snailfish"""
+
 def left_add(p, l):
     if isinstance(p, int):
         return p + l

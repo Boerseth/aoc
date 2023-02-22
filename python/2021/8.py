@@ -1,3 +1,5 @@
+"""Seven Segment Search"""
+
 
 
 def interpret(line):

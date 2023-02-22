@@ -1,3 +1,5 @@
+"""Packet Decoder"""
+
 SUM, PRD, MIN, MAX, VAL, GTH, LTH, EQL = range(8)
 
 

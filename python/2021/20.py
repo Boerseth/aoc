@@ -1,3 +1,5 @@
+"""Trench Map"""
+
 def neighbours(z):
     for dz in [-1 + 1j, 1j, 1 + 1j, -1, 0, 1, -1 - 1j, -1j, 1 - 1j]:
         yield z + dz

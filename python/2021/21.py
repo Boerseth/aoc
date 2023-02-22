@@ -1,3 +1,5 @@
+"""Dirac Dice"""
+
 def solve(text):
     line_1, line_2 = text.strip().splitlines()
     start_1 = int(line_1.split(": ")[1].strip())

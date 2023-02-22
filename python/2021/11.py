@@ -1,3 +1,5 @@
+"""Dumbo Octopus"""
+
 def neighbours(r, c, R, C):
     for dr, dc in [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]:
         if 0 <= r + dr < R and 0 <= c + dc < C:

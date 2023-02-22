@@ -1,3 +1,5 @@
+"""Transparent Origami"""
+
 def fold(points, fold_direction, fold_coord):
     if fold_direction == "x":
         return {(fold_coord - abs(fold_coord - x), y) for x, y in points}

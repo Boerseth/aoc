@@ -1,3 +1,5 @@
+"""Giant Squid"""
+
 def solve(text):
     lines = text.splitlines()
     bingo_numbers = [int(num) for num in lines.pop(0).split(",")]

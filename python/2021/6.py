@@ -1,3 +1,5 @@
+"""Lanternfish"""
+
 def next_timer_state(timer):
     if timer >= 7:
         return timer - 1

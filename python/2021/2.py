@@ -1,3 +1,5 @@
+"""Dive!"""
+
 # Interpret movement as a complex number
 # - Has direction and magnitude
 # - Can be summed easily

@@ -1,3 +1,5 @@
+"""Reactor Reboot"""
+
 def boxes_overlap(box_1, box_2):
     return not any(
         max1 <= min2 or max2 <= min1 for (min1, max1), (min2, max2) in zip(box_1, box_2)

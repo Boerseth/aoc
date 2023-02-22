@@ -1,3 +1,5 @@
+"""Passage Pathing"""
+
 cache = {}
 def find_number_of_paths(position, move_choices, visited, permitted_small_revisits):
     key = (position, "".join(sorted(visited)), permitted_small_revisits)
