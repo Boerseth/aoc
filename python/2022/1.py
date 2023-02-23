@@ -1,5 +1,6 @@
 """Calorie Counting"""
 
+
 def get_top_n(numbers, n):
     top_group = numbers[:1]
     for number in numbers[1:]:

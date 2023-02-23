@@ -1,5 +1,6 @@
 """Rock Paper Scissors"""
 
+
 def solve(text):
     matches = [line.strip().split() for line in text.splitlines()]
     strategy = [(" ABC".find(s1), " XYZ".find(s2)) for s1, s2 in matches]

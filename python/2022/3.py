@@ -1,5 +1,6 @@
 """Rucksack Reorganization"""
 
+
 def priority(item: str) -> int:
     if item >= "a":
         return ord(item) + 1 - ord("a")

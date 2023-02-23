@@ -1,5 +1,6 @@
 """Monkey Math"""
 
+
 def new_node(name):
     return {
         "name": name,

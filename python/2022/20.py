@@ -1,5 +1,6 @@
 """Grove Positioning System"""
 
+
 def mix(numbers, indices):
     N = len(numbers)
     for i, number in enumerate(numbers):

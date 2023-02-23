@@ -1,5 +1,6 @@
 """Monkey in the Middle"""
 
+
 def parse_monkey(monkey_text):
     lines = list(map(str.strip, monkey_text.splitlines()))
     return {

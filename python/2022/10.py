@@ -1,5 +1,6 @@
 """Cathode-Ray Tube"""
 
+
 def simulate(instructions):
     X = 1
     cycle = 0

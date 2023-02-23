@@ -1,5 +1,6 @@
 """Supply Stacks"""
 
+
 def parse_diagram(diagram_text):
     diagram_lines = diagram_text.splitlines()[::-1]
     return ["".join(stack).strip() for stack in list(zip(*diagram_lines))[1::4]]

@@ -1,5 +1,6 @@
 """Unstable Diffusion"""
 
+
 def neighbours(z):
     for dz in [1, 1 + 1j]:
         for rot in [1, 1j, -1, -1j]:

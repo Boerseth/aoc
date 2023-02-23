@@ -1,5 +1,6 @@
 """Hill Climbing Algorithm"""
 
+
 def dijkstra(height, start, targets, graph):
     distances = {start: 0}
     unvisited = {0: [start]}

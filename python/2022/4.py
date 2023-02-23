@@ -1,5 +1,6 @@
 """Camp Cleanup"""
 
+
 def solve(text):
     id_pair_pairs = [
         eval(f'({line.replace(",", "),(").replace("-", ",")})')

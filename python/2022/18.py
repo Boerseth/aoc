@@ -1,5 +1,6 @@
 """Boiling Boulders"""
 
+
 def neighbours(r):
     x, y, z = r
     for dc in [-1, 1]:

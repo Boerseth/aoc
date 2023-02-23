@@ -1,5 +1,6 @@
 """Beacon Exclusion Zone"""
 
+
 def parse_coords(string: str) -> complex:
     coords = string.split(" at ")[1].split(", ")
     x = int(coords[0].split("=")[1])

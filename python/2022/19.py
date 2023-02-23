@@ -1,5 +1,6 @@
 """Not Enough Minerals"""
 
+
 def have_enough(robot_type, robot_count, blueprint):
     return all(recipe[robot_type] <= robot_count for recipe in blueprint)
 
