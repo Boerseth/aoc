@@ -1,7 +1,6 @@
 """Seven Segment Search"""
 
 
-
 def interpret(line):
     digits = line.split(" | ")[0].split()
 
@@ -11,8 +10,14 @@ def interpret(line):
     eight = [d for d in digits if len(d) == 7].pop()
 
     two_three_five = [d for d in digits if len(d) == 5]
-    three = [d for d in two_three_five if all(s not in one for s in [c for c in eight if c not in d])].pop()
-    two = [d for d in two_three_five if sorted(list({c for c in d + four})) == sorted(list(c for c in eight))].pop()
+    three = [
+        d for d in two_three_five if all(s not in one for s in [c for c in eight if c not in d])
+    ].pop()
+    two = [
+        d
+        for d in two_three_five
+        if sorted(list({c for c in d + four})) == sorted(list(c for c in eight))
+    ].pop()
     five = [d for d in two_three_five if d not in [two, three]].pop()
 
     zero_six_nine = [d for d in digits if len(d) == 6]
@@ -34,10 +39,8 @@ def interpret(line):
         "".join(sorted(nine)): "9",
     }
 
-    return int("".join(
-        lookup["".join(sorted(d))]
-        for d in line.split(" | ")[1].split()
-    ))
+    return int("".join(lookup["".join(sorted(d))] for d in line.split(" | ")[1].split()))
+
 
 def solve(text):
     lines = [line.strip() for line in text.splitlines()]

@@ -18,16 +18,24 @@ def get_index(position):
 
 
 # Sanity check:
-amphipod_diagram = list("""#############
+amphipod_diagram = list(
+    """#############
 #...........#
 ###B#C#B#D###
   #A#D#C#A#  
-  #########  """.replace("\n", ""))
-amphipod_diagram = list("""#############
+  #########  """.replace(
+        "\n", ""
+    )
+)
+amphipod_diagram = list(
+    """#############
 #...........#
 ###D#B#D#A###
   #C#C#A#B#  
-  #########  """.replace("\n", ""))
+  #########  """.replace(
+        "\n", ""
+    )
+)
 assert all(amphipod_diagram[get_index(pos)] != "#" for pos in POSITIONS)
 
 
@@ -48,7 +56,10 @@ def is_move_legal(diagram, amphipod, origin, destination):
         # Never just move from inner to outer part of room
         or (r_dest == 2 and r_orig == 3 and c_dest == c_orig)
         # Don't move if in a completed room
-        or (c_orig == ROOM_NUMBER[amphipod] and diagram[get_index((2, c_orig))] == diagram[get_index((3, c_orig))] == amphipod)
+        or (
+            c_orig == ROOM_NUMBER[amphipod]
+            and diagram[get_index((2, c_orig))] == diagram[get_index((3, c_orig))] == amphipod
+        )
         # Don't move out if you're alone at home inner
         or (c_orig == ROOM_NUMBER[amphipod] and r_orig == 3)
         # Otherwise, should be fine...
@@ -81,7 +92,8 @@ def _get_legal_destinations(diagram, amphipod, origin, previous, current, distan
 
 def can_go_straight_home(diagram, amphipod, pos):
     r, c = pos
-    c_room = 
+    c_room = 0
+
 
 def get_hallway_positions_incr(start, end):
     if start <= 1:
@@ -104,6 +116,7 @@ def get_hallway_positions_decr(start, end):
     if end <= 1:
         yield 1
 
+
 def get_legal_destinations(diagram, max_depth, amphipod, pos):
     r, c = pos
     c_room = ROOM_NUMBER[amphipod]
@@ -114,7 +127,7 @@ def get_legal_destinations(diagram, max_depth, amphipod, pos):
         if c == c_room:
             range_behind = range(1 + max_depth, r - 1, -1)
             if all(diagram[(r_i, c)] == amphipod for r_i in range_behind):
-            return []
+                return []
 
         range_right = list(range(c + 1, 11, 2)) + [11]
         range_left = list(range(c - 1, 0, -2)) + [1]
@@ -142,22 +155,29 @@ def get_legal_destinations(diagram, max_depth, amphipod, pos):
     raise Exception(f"seems to be too many of type {amphipod}")
 
 
-
 def get_legal_moves(diagram):
     legal_moves = []
     for pos in POSITIONS:
         amphipod = diagram[pos]
         if not amphipod in "ABCD":
             continue
-        legal_moves += [(amphipod, pos, dest, dist) for dest, dist in get_legal_destinations(diagram, 2, amphipod, pos)]
+        legal_moves += [
+            (amphipod, pos, dest, dist)
+            for dest, dist in get_legal_destinations(diagram, 2, amphipod, pos)
+        ]
     return legal_moves
+
+
 def _get_legal_moves(diagram):
     legal_moves = []
     for pos in POSITIONS:
         amphipod = diagram[get_index(pos)]
         if not amphipod in "ABCD":
             continue
-        legal_moves += [(amphipod, pos, dest, dist) for dest, dist in _get_legal_destinations(diagram, amphipod, pos, pos, pos, 0)]
+        legal_moves += [
+            (amphipod, pos, dest, dist)
+            for dest, dist in _get_legal_destinations(diagram, amphipod, pos, pos, pos, 0)
+        ]
     return legal_moves
 
 
@@ -166,6 +186,7 @@ def apply_move(diagram, origin, destination):
     new_diagram[origin] = diagram[destination]
     new_diagram[destination] = diagram[origin]
     return new_diagram
+
 
 def _apply_move(diagram, origin, destination):
     index_orig = get_index(origin)
@@ -184,22 +205,30 @@ AMPHIPOD_ENERGY_COST = {
     "D": 1000,
 }
 
+
 def move_cost(amphipod, distance):
     return distance * AMPHIPOD_ENERGY_COST[amphipod]
 
 
-
-DONE = list("""#############
+DONE = list(
+    """#############
 #...........#
 ###A#B#C#D###
   #A#B#C#D#  
-  #########  """.replace("\n", ""))
+  #########  """.replace(
+        "\n", ""
+    )
+)
 
-TEST = list("""#############
+TEST = list(
+    """#############
 #A..........#
 ###.#B#C#D###
   #A#B#C#D#  
-  #########  """.replace("\n", ""))
+  #########  """.replace(
+        "\n", ""
+    )
+)
 
 assert TEST == _apply_move([c for c in DONE], (2, 3), (1, 1))
 for amphipod, col in ROOM_NUMBER.items():
@@ -217,14 +246,18 @@ def parse_diagram(text):
     return diagram
 
 
-DONE = parse_diagram("""#############
+DONE = parse_diagram(
+    """#############
 #...........#
 ###A#B#C#D###
   #A#B#C#D#  
-  #########  """)
+  #########  """
+)
 
 
 cache = {}
+
+
 def find_minimum_cost(diagram):
     diagram_string = "".join(map(lambda k: str((k, diagram[k])), sorted(diagram.keys())))
     if diagram_string in cache:
@@ -253,22 +286,37 @@ def find_minimum_cost(diagram):
     cache[diagram_string] = minimum, moves
     return minimum, moves
 
+
 _amphipod_diagram = """#############
 #...........#
 ###D#B#D#A###
   #C#C#A#B#
   #########"""
 
-assert not get_legal_destinations(parse_diagram("""
+assert not get_legal_destinations(
+    parse_diagram(
+        """
 #.D.........#
 ###.#B#D#A###
   #C#C#A#B#
-  #########"""), 2, "D", (1, 2))
-l = get_legal_destinations(parse_diagram("""
+  #########"""
+    ),
+    2,
+    "D",
+    (1, 2),
+)
+l = get_legal_destinations(
+    parse_diagram(
+        """
 #...........#
 ###C#B#D#B###
   #A#C#A#D#
-  #########"""), 2, "C", (2, 3))
+  #########"""
+    ),
+    2,
+    "C",
+    (2, 3),
+)
 assert len(l) == 7
 
 cost, moves = find_minimum_cost(parse_diagram(_amphipod_diagram))

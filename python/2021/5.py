@@ -1,7 +1,6 @@
 """Hydrothermal Venture"""
 
 
-
 def get_vent_locations_on_line(x1, y1, x2, y2):
     dx = int(x2 > x1) - int(x2 < x1)  # -1|0|1
     dy = int(y2 > y1) - int(y2 < y1)

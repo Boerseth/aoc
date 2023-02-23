@@ -1,5 +1,6 @@
 """Lanternfish"""
 
+
 def next_timer_state(timer):
     if timer >= 7:
         return timer - 1
@@ -27,6 +28,8 @@ def spawn(timers, days_to_go):
 #
 # etc. for roof((d-1)/7) child families
 cache = {}
+
+
 def size_of_family_new(initial_state, days_to_go):
     if initial_state > 0:
         return size_of_family_new(0, days_to_go - initial_state)

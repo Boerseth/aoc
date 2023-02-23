@@ -1,5 +1,6 @@
 """Snailfish"""
 
+
 def left_add(p, l):
     if isinstance(p, int):
         return p + l
@@ -35,7 +36,7 @@ def split(p, has_already_split):
     if has_already_split:
         return True, p
     if isinstance(p, int):
-        return (True, [p//2, (p + 1)//2]) if p >= 10 else (False, p)
+        return (True, [p // 2, (p + 1) // 2]) if p >= 10 else (False, p)
     p0, p1 = p
     has_already_split, p0 = split(p0, has_already_split)
     has_already_split, p1 = split(p1, has_already_split)

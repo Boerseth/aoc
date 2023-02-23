@@ -1,5 +1,6 @@
 """Chiton"""
 
+
 def find_shortest_path_length(risk_level, R, C):
     path_length = {(0, 0): 0}
 
@@ -76,6 +77,7 @@ def solve(text):
 
     risk_level_2 = {
         (r, c): (risk_level_1[(r % R), (c % C)] + (r // R) + (c // C) - 1) % 9 + 1
-        for r in range(5 * R) for c in range(5 * C)
+        for r in range(5 * R)
+        for c in range(5 * C)
     }
     yield find_shortest_path_length(risk_level_2, 5 * R, 5 * C)

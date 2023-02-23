@@ -1,5 +1,6 @@
 """The Treachery of Whales"""
 
+
 def solve(text):
     positions = list(map(int, text.strip().split(",")))
     low = min(positions)

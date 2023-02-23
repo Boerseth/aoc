@@ -1,5 +1,6 @@
 """Smoke Basin"""
 
+
 def neighbours(y, x, N, M):
     for d in [-1, 1]:
         if 0 <= y + d < N:
@@ -9,6 +10,8 @@ def neighbours(y, x, N, M):
 
 
 cache = {}
+
+
 def get_basin(heights, y, x):
     N = len(heights)
     M = len(heights[0])
@@ -27,7 +30,9 @@ def solve(text):
     M = len(heights[0])
 
     lowpoints = [
-        (y, x) for y in range(N) for x in range(M)
+        (y, x)
+        for y in range(N)
+        for x in range(M)
         if all(heights[y][x] < heights[a][b] for a, b in neighbours(y, x, N, M))
     ]
     yield sum(heights[y][x] + 1 for y, x in lowpoints)

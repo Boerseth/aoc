@@ -4,9 +4,12 @@
 # - Has direction and magnitude
 # - Can be summed easily
 def parse(command):
-    if command.startswith("forward"): return int(command.split()[1])
-    if command.startswith("down"): return int(command.split()[1]) * 1j
-    if command.startswith("up"): return - int(command.split()[1]) * 1j
+    if command.startswith("forward"):
+        return int(command.split()[1])
+    if command.startswith("down"):
+        return int(command.split()[1]) * 1j
+    if command.startswith("up"):
+        return -int(command.split()[1]) * 1j
     raise Exception
 
 

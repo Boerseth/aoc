@@ -21,7 +21,9 @@ def solve(text):
     polymer_template = data.pop(0)
     insertion_rule = dict(d.split(" -> ") for d in data)
 
-    frequencies = {pair: properly_count_substring(polymer_template, pair) for pair in insertion_rule}
+    frequencies = {
+        pair: properly_count_substring(polymer_template, pair) for pair in insertion_rule
+    }
     pair_sources = {pair: [] for pair in insertion_rule}
     for source, insert in insertion_rule.items():
         pair_sources[source[0] + insert].append(source)

@@ -36,9 +36,7 @@ def collect_version_numbers(packet):
     version_number, _, content = packet
     if not isinstance(content, list):
         return [version_number]
-    return [version_number] + [
-        num for pack in content for num in collect_version_numbers(pack)
-    ]
+    return [version_number] + [num for pack in content for num in collect_version_numbers(pack)]
 
 
 def evaluate(packet):

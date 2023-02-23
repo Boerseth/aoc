@@ -59,7 +59,7 @@ CLOSE_DISTANCE_MATCH_THRESHOLD = 2 * OVERLAP_THRESHOLD
 # still expect to find at least 2 * OVERLAP_THRESHOLD number of
 # distance matches.
 # Might result in some false-positives, but probably not.
-# Might also be that the 12 matching points are not in fact 
+# Might also be that the 12 matching points are not in fact
 # "close" by this definition. To be robust, there should be
 # some loosening of constraints happening as calibration
 # cycles continue without finding matches.
@@ -79,7 +79,7 @@ def diff(r1, r2):
 
 def sq_norm(r):
     x, y, z = r
-    return x ** 2 + y ** 2 + z ** 2
+    return x**2 + y**2 + z**2
 
 
 def orientations():
@@ -134,7 +134,8 @@ class Scanner:
     def __init__(self, _id: int, beacons: list[Beacon]) -> None:
         self.id = _id
         distances = [
-            d for d in [diff(r1, r2) for r1 in beacons for r2 in beacons]
+            d
+            for d in [diff(r1, r2) for r1 in beacons for r2 in beacons]
             if sq_norm(d) < CLOSE_NEIGH_CUTOFF_SQUARED
         ]
         self.data_orientations = [
@@ -251,14 +252,13 @@ def get_readings_from_input(text: str) -> list[list[Beacon]]:
     scanner_outputs = text.strip().split("---")[0::2]
     return [
         [tuple(map(int, line.split(","))) for line in output.strip().split("\n") if line]
-        for output in scanner_outputs if output
+        for output in scanner_outputs
+        if output
     ]
 
 
 def solve(text):
-    scanners = [
-        Scanner(i, beacons) for i, beacons in enumerate(get_readings_from_input(text))
-    ]
+    scanners = [Scanner(i, beacons) for i, beacons in enumerate(get_readings_from_input(text))]
     calibrated_scanners = calibrate_scanners(scanners)
 
     beacon_positions = {b for s in calibrated_scanners for b in s.beacons}
@@ -266,7 +266,7 @@ def solve(text):
 
     scanner_positions = [s.position for s in calibrated_scanners]
     metro_metric = max(
-        sum(abs(e1 - e2) for e1, e2 in zip(r1,r2))
+        sum(abs(e1 - e2) for e1, e2 in zip(r1, r2))
         for r1 in scanner_positions
         for r2 in scanner_positions
     )

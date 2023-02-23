@@ -1,10 +1,11 @@
 """Trick Shot"""
 
+
 def solve(text):
     _, target = text.split(": ")
     xmin, xmax, ymin, ymax = [int(v) for word in target.split(", ") for v in word[2:].split("..")]
 
-    yield (ymin ** 2 - abs(ymin)) // 2
+    yield (ymin**2 - abs(ymin)) // 2
 
     def is_in(x, y):
         return xmin <= x <= xmax and ymin <= y <= ymax

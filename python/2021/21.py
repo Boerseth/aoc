@@ -1,5 +1,6 @@
 """Dirac Dice"""
 
+
 def solve(text):
     line_1, line_2 = text.strip().splitlines()
     start_1 = int(line_1.split(": ")[1].strip())
@@ -24,14 +25,19 @@ def solve(text):
         rolls += 3
     yield rolls * min(points_1, points_2)
 
-
     cache = {}
+
     def outcome_freqs(*args):
         if args in cache:
             return cache[args]
         start_1, start_2, pos_1, pos_2, scr_1, scr_2, player_1_turn = args
 
-        if scr_1 < 0 or scr_2 < 0 or (player_1_turn and scr_2 > 20) or (not player_1_turn and scr_1 > 20):
+        if (
+            scr_1 < 0
+            or scr_2 < 0
+            or (player_1_turn and scr_2 > 20)
+            or (not player_1_turn and scr_1 > 20)
+        ):
             return 0
         if scr_1 == scr_2 == 0:
             return int(pos_1 == start_1 and pos_2 == start_2 and not player_1_turn)
@@ -42,14 +48,17 @@ def solve(text):
             if scr_2 < 21 and player_1_turn:
                 pos_1_prev = 1 + (pos_1 - 1 - i) % 10
                 scr_1_prev = scr_1 - pos_1
-                freq += mult * outcome_freqs(start_1, start_2, pos_1_prev, pos_2, scr_1_prev, scr_2, False)
+                freq += mult * outcome_freqs(
+                    start_1, start_2, pos_1_prev, pos_2, scr_1_prev, scr_2, False
+                )
             if scr_1 < 21 and not player_1_turn:
                 pos_2_prev = 1 + (pos_2 - 1 - i) % 10
                 scr_2_prev = scr_2 - pos_2
-                freq += mult * outcome_freqs(start_1, start_2, pos_1, pos_2_prev, scr_1, scr_2_prev, True)
+                freq += mult * outcome_freqs(
+                    start_1, start_2, pos_1, pos_2_prev, scr_1, scr_2_prev, True
+                )
         cache[(start_1, start_2, pos_1, pos_2, scr_1, scr_2, player_1_turn)] = freq
         return freq
-
 
     player_1_wins = sum(
         outcome_freqs(start_1, start_2, pos_1, pos_2, j, i, False)
@@ -66,6 +75,7 @@ def solve(text):
         for j in range(21)
     )
     yield max(player_1_wins, player_2_wins)
+
 
 """
 

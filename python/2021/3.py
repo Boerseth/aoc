@@ -1,5 +1,6 @@
 """Binary Diagnostic"""
 
+
 def filter_data_bitwise(filtered_data, filter_bit, filter_by_most_common=True):
     if len(filtered_data) == 1 or filter_bit == 0:
         return filtered_data
@@ -17,8 +18,7 @@ def solve(text):
     N = len(lines[0].strip())  # number of bits in each number
     data = [int(line, base=2) for line in lines]
 
-
-    bits = [2 ** n for n in range(N)]
+    bits = [2**n for n in range(N)]
     gamma = sum(bit for bit in bits if sum(datum & bit for datum in data) // bit >= len(data) / 2)
     epsilon = sum(bit for bit in bits if sum(datum & bit for datum in data) // bit <= len(data) / 2)
     yield epsilon * gamma

@@ -1,5 +1,6 @@
 """Trench Map"""
 
+
 def neighbours(z):
     for dz in [-1 + 1j, 1j, 1 + 1j, -1, 0, 1, -1 - 1j, -1j, 1 - 1j]:
         yield z + dz
@@ -10,7 +11,9 @@ def solve(text):
     enhancer = [1 if c == "#" else 0 for c in lines[0]]
 
     def will_be_on(z, image, is_inverted):
-        index = sum(2 ** (8 - i) for i, zn in enumerate(neighbours(z)) if (zn in image) != is_inverted)
+        index = sum(
+            2 ** (8 - i) for i, zn in enumerate(neighbours(z)) if (zn in image) != is_inverted
+        )
         return bool(enhancer[index]) == is_inverted
 
     def enhance_infinite_flipper(image, N):
@@ -22,12 +25,11 @@ def solve(text):
         return image
 
     image = {
-        i + j * 1j
-        for j, row in enumerate(lines[2:][::-1])
-        for i, c in enumerate(row) if c == "#"
+        i + j * 1j for j, row in enumerate(lines[2:][::-1]) for i, c in enumerate(row) if c == "#"
     }
     yield len(enhance_infinite_flipper(image, 2))
     yield len(enhance_infinite_flipper(image, 50))
+
 
 """
 quit()
