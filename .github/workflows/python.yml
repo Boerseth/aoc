@@ -1,0 +1,13 @@
+name: aoc-python
+run-name: Run checks on Python code on ${{ github.ref }}
+on: [push, pull_request]
+jobs:
+  black:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: psf/black@stable
+        with:
+          options: "--check --diff --verbose --line-length 100"
+          src: "./python"
+          version: "23.1.0"
