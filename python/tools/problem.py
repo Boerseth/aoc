@@ -6,7 +6,7 @@ class Problem:
         self.year = year
         self.day = day
         self.test = test
-        self.path =  f"{base_dir}/{self.year}/{self.day}"
+        self.path = f"{base_dir}/{self.year}/{self.day}"
 
     def get_problem_file(self, filename: str) -> str:
         prefix = "test" if self.test else ""
