@@ -1,5 +1,6 @@
 """Doesn't He Have Intern-Elves For This?"""
 
+
 def is_nice_1(s):
     if not 3 <= sum(1 for c in s if c in "aeiou"):
         return False
@@ -13,7 +14,7 @@ def is_nice_1(s):
 def is_nice_2(s):
     if not any(a == b for a, b in zip(s, s[2:])):
         return False
-    if not any(s[i:i+2] in s[i+2:] for i in range(len(s) - 2)):
+    if not any(s[i : i + 2] in s[i + 2 :] for i in range(len(s) - 2)):
         return False
     return True
 

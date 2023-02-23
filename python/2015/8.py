@@ -1,5 +1,6 @@
 """Matchsticks"""
 
+
 def memory(line):
     assert line[0] == line[-1] == '"'
     line = line[1:-1]
@@ -8,11 +9,11 @@ def memory(line):
 
     i = 0
     while i < len(line):
-        if line[i:i+2] == "\\x":
-            line = line[:i] + "." + line[i+4:]
+        if line[i : i + 2] == "\\x":
+            line = line[:i] + "." + line[i + 4 :]
         i += 1
 
-    line =  line.replace('\\"', ".")
+    line = line.replace('\\"', ".")
     return line
 
 

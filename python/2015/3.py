@@ -1,10 +1,12 @@
 """Perfectly Spherical Houses in a Vacuum"""
 
+
 def walk(directions):
     rooms = [0]
     for direction in directions:
         rooms.append(rooms[-1] + direction)
     return rooms
+
 
 def solve(text):
     text = text.strip()

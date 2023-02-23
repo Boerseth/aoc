@@ -1,5 +1,6 @@
 """Not Quite Lisp"""
 
+
 def solve(text):
     instructions = [1 if c == "(" else -1 if c == ")" else 0 for c in text]
 

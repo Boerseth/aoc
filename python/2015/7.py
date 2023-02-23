@@ -1,5 +1,6 @@
 """Some Assembly Required"""
 
+
 def solve(text):
     instructions = [line.strip().split(" -> ") for line in text.splitlines()]
 
@@ -31,7 +32,7 @@ def solve(text):
         if x.isdigit():
             store(x, int(x))
         if solved(x):
-            return ~ get_value(x)
+            return ~get_value(x)
         return None
 
     def evaluate_3_elements(x, operator, y):
@@ -48,9 +49,9 @@ def solve(text):
         if operator == "OR":
             return get_value(x) | get_value(y)
         if operator == "LSHIFT":
-            return (get_value(x) << int(y)) % 2 ** 16
+            return (get_value(x) << int(y)) % 2**16
         if operator == "RSHIFT":
-            return (get_value(x) >> int(y)) % 2 ** 16
+            return (get_value(x) >> int(y)) % 2**16
         return None
 
     def try_to_evaluate(expression):
@@ -67,7 +68,7 @@ def solve(text):
         for expression, assigned in instructions:
             if not solved(assigned):
                 if (value := try_to_evaluate(expression)) is not None:
-                    store(assigned, int(value) % 2 ** 16)
+                    store(assigned, int(value) % 2**16)
     yield solved_circuit["a"]
 
     # Part 2
@@ -76,5 +77,5 @@ def solve(text):
         for expression, assigned in instructions:
             if not solved(assigned):
                 if (value := try_to_evaluate(expression)) is not None:
-                    store(assigned, int(value) % 2 ** 16)
+                    store(assigned, int(value) % 2**16)
     yield solved_circuit["a"]

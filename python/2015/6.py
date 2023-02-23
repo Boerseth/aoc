@@ -1,5 +1,6 @@
 """Probably a Fire Hazard"""
 
+
 def parse(line):
     *command, coords_1, _, coords_2 = line.split()
     return " ".join(command), *map(int, coords_1.split(",")), *map(int, coords_2.split(","))
