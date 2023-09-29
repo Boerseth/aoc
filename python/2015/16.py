@@ -19,7 +19,7 @@ ANALYSIS = {k: int(v) for k, v in [line.split(": ") for line in MFCSAM]}
 
 def parse_sue(raw: str) -> tuple[dict, int]:
     _, number, *rest = raw.strip().replace(":", "").replace(",", "").split()
-    return number, {key: int(val) for key, val in zip(rest[::2], rest[1::2])}
+    return int(number), {key: int(val) for key, val in zip(rest[::2], rest[1::2])}
 
 
 def verify_1(key: str, val: int) -> bool:

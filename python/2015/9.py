@@ -2,7 +2,7 @@
 from typing import Iterator
 
 
-def generate_paths(locations, partial_path) -> Iterable[list[str]]:
+def generate_paths(locations, partial_path) -> Iterator[list[str]]:
     if len(locations) == len(partial_path):
         yield partial_path
         return
