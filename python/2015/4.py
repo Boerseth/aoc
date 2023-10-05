@@ -3,14 +3,14 @@
 import hashlib
 
 
-def miner(seed, n):
+def miner(seed, goal):
     nonce = 0
-    while not hashlib.md5((seed + str(nonce)).encode()).hexdigest().encode().startswith(b"0" * n):
+    while not hashlib.md5(f"{seed}{nonce}".encode()).hexdigest().startswith(goal):
         nonce += 1
     return nonce
 
 
 def solve(text):
     text = text.strip()
-    yield miner(text, 5)
-    yield miner(text, 6)
+    yield miner(text, "00000")
+    yield miner(text, "000000")
