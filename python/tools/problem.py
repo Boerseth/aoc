@@ -14,8 +14,14 @@ class Problem:
         with open(file_path, "r") as f:
             return f.read()
 
-    def input(self) -> str:
-        return self.get_problem_file("input")
+    def input(self) -> str | None:
+        try:
+            return self.get_problem_file("input")
+        except Exception:
+            return None
 
-    def solutions(self) -> str:
-        return json.loads(self.get_problem_file("solution.json"))
+    def solutions(self) -> list[str | None]:
+        try:
+            return json.loads(self.get_problem_file("solution.json"))
+        except Exception:
+            return [None, None]
