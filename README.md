@@ -3,79 +3,77 @@
 This repository contains code written to solve problems present in the _Advent
 of Code_-advent calendar.
 
+
+## Problem input
+
+The creator of Advent of Code has requested that participants not publish their
+problem inputs. For this reason they are ignored in this repository, however
+I store them locally in the folder `aoc-problems`, along with solutions:
+
+```
+./aoc-problems/
+    |- 2015/
+    |   |- 1/
+    |   |   |- input
+    |   |   '- solution.json
+...
+```
+
+All files `solution.json` have the structure
+```json
+[
+    "answer to problem 1",
+    "answer to problem 2"
+]
+```
+
+
 ## Python
 
-Each year solved in Python has the structure
-```
-   20XX/
-    |- helpers.py
-    |- 1.py
-    |- 2.py
-    |- ...
-    |- inputs/
-    |   |- 1
-    |   ...
-    `- solutions/
-        |- 1.json
-        ...
-```
+The `python` folder contains solutions written in Python, along with a runner
+script `main.py`.
 
-Each day is solved in its own file, e.g. `5.py`, with inputs in `inputs/5` and solutions in an array in `solutions/5.json`. The problem gets solved by running
-```sh
-$ python3 5.py
-Part 1: 1234
-Part 2: 4576
+```
+./python/
+    |- main.py
+    |- 2015/
+    |   |- 1.py
+    |   |- 2.py
+    |   '...
+    |- 2020/
+    |   |- 1.py
+...
 ```
 
-The structure of each python file is basically as follows:
-```python3
-# 5.py
-def solve(text):
-    yield 1234
-    yield 4576
-
-
-if __name__ == "__main__":
-    from helpers import main_template
-
-    main_template("5", solve)
+The runner script can run a specific year-and-day problem, all days one year,
+or all years. Each problem output gets compared against the stored solutions, unless the flag `-n/--no-assert` is specified. As an example:
+```bash
+$ ./main.py -y 2015 -d 1 -n -t
+# AoC - Year 2015, Day 1: Not Quite Lisp
+# Part 1: 232
+# Part 2: 1783
+# 
+# AoC - Year 2015, Day 1: Not Quite Lisp 
+# -----------------------------------------
+# Blocks: 0.0005440711975097656
+#   Part 1:    79% - 0.00043010711669921875
+#   Part 2:    20% - 0.00011396408081054688
+# -----------------------------------------
 ```
-where the `main_template` from `helpers.py` handles all the things that are common between days, like reading the input/solution file, printing the `yield`ed results, and asserting equality.
 
-This main-template accepts some useful options:
-```man
-$ python 5.py -h
-usage: python3 5.py [-h] [--input INPUT] [--solution SOLUTION] [--timer] [--no-assert]
+Each solution file `{day}.py` has the format
 
-Solves the problems 1 and 2 from Advent of Code, day 5
+```python
+"""Title of problem"""
+from typing import Iterator
 
-options:
-  -h, --help           show this help message and exit
-  --input INPUT        Path to problem input
-  --solution SOLUTION  Path to json-formatted problem solutions
-  --timer              Print table of time taken for the two parts
-  --no-assert          Do not assert that computed answer equals solution
-  
-Good luck!
+
+def solve(text: str) -> Iterator:
+    yield None
+    yield None
 ```
-These options are particularly handy when still creating the solution. For example,
-```
-$ python3 5.py --input /dev/null --no-assert --timer
-Part 1: 
-Part 2: 
 
-                Day 5                 
---------------------------------------
-Blocks: 2.002716064453125e-05
-Part 1    73% - 1.4781951904296875e-05
-Part 2    26% - 5.245208740234375e-06
---------------------------------------
-```
-Provides a dummy input-file, so test-input can be used without even creating the proper file; There is no assert, and that also removes the need to create a solutions file; There is a table of timer-statistics printed at the end.
-
-## Notes to self
-
-Cat a file with 4 spaces of indent, for easy pasting into e.g. Reddit:
-```sh
-$ cat filename | sed 's/^/    /'
-```
+The `main.py` script expects to be able to import a method called `solve`
+from each file, and that `solve` returns a generator of solutions to part 1 and 2.
+Because the generator halts between each iteration, the different parts can be
+timed.
