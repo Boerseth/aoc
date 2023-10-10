@@ -1,4 +1,5 @@
-from importlib import import_module
+#!/usr/bin/env python3
+from importlib import import_module, util
 from os import path, walk
 
 from tools.arguments import parse_args
@@ -8,7 +9,7 @@ from tools.timer import Timer
 
 SCRIPT_LOCATION = path.realpath(__file__)
 ROOT = SCRIPT_LOCATION.split("/python/")[0]
-PROBLEMS_DIR = f"{ROOT}/problems"
+PROBLEMS_DIR = f"{ROOT}/aoc-problems"
 
 
 def _get_all_years():
@@ -32,16 +33,18 @@ def solve(
     timer = Timer(title)
     problem = Problem(year, day, with_test, PROBLEMS_DIR)
 
-    problem_input = problem.input()
     problem_solutions = problem.solutions()
-    answers = module.solve(problem_input)  # Won't start until next() is called
+    answers = module.solve(problem.input())  # Won't start until next() is called
 
     print(title)
     for part, solution in zip([1, 2], problem_solutions):
         part_title = f"  Part {part}:"
 
         with timer.time_block(part_title):
-            answer = next(answers)
+            try:
+                answer = next(answers)
+            except StopIteration:
+                answer = None
         print(part_title, answer)
 
         if with_assert:
@@ -60,8 +63,12 @@ def main(
 ) -> None:
     years = [year] if year is not None else _get_all_years()
     for year in years:
+        if not util.find_spec(f"{year}"):
+            continue
         days = [day] if day is not None else _get_all_days(year)
         for day in days:
+            if not util.find_spec(f"{year}.{day}"):
+                continue
             solve(year, day, with_test, with_assert, with_timer)
 
 
