@@ -1,6 +1,7 @@
 """Matchsticks"""
 
-def memory(line):
+
+def memory(line: str) -> str:
     assert line[0] == line[-1] == '"'
     line = line[1:-1]
 
@@ -26,5 +27,5 @@ def escape(line):
 
 def solve(text):
     lsoc = [line.strip() for line in text.splitlines()]
-    yield sum(len(line) - memory(line) for line in lsoc)
+    yield sum(len(line) - len(memory(line)) for line in lsoc)
     yield sum(len(escape(line)) - len(line) for line in lsoc)
