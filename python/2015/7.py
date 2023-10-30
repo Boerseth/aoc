@@ -1,4 +1,5 @@
 """Some Assembly Required"""
+from typing import Iterator
 
 
 class Circuit:
@@ -76,7 +77,7 @@ class Circuit:
         assert not instructions
 
 
-def solve(text):
+def solve(text) -> Iterator[int]:
     instructions = [line.strip().split(" -> ") for line in text.splitlines()]
 
     circuit1 = Circuit()
