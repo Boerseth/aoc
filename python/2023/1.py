@@ -1,4 +1,4 @@
-"""Day 1: Trebuchet?!"""
+"""Trebuchet?!"""
 from collections.abc import Iterable, Iterator
 
 
