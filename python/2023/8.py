@@ -1,5 +1,6 @@
 """Haunted Wasteland"""
 from collections.abc import Iterable, Iterator
+from itertools import cycle
 from math import gcd, lcm
 from typing import Literal
 
@@ -12,7 +13,7 @@ For some integer vectors `cycle_length[:]` and `n[:]`.
 This is a set of linear Diophantine equations.
 
 It is known that `N` must be a multiple of all `gcd(target, length)`, which
-gives us a list of divisors.
+gives us a list of divisors of `N`. Guess at `lcm(*divisors)`
 """
 
 Instruction = Literal["L", "R"]
@@ -36,15 +37,9 @@ def parse(text: str) -> None:
     return instructions, network
 
 
-def loop(iterator: Iterable) -> Iterator:
-    while True:
-        for it in iterator:
-            yield it
-
-
 def get_steps_to_goal(network: Network, instructions: list[Instruction]) -> int:
     node = START
-    for count, instruction in enumerate(loop(instructions), start=1):
+    for count, instruction in enumerate(cycle(instructions), start=1):
         node = network[node][instruction]
         if node == GOAL:
             return count
@@ -55,11 +50,12 @@ def get_divisor(network: Network, instructions: list[Instruction], pos: Node) ->
     cycle_start = None
     cycle_end = None
     targets = []
-    for count, instruction in enumerate(loop(instructions), start=1):
+    for count, instruction in enumerate(cycle(instructions), start=1):
         pos = network[pos][instruction]
         mod = count % len(instructions)
         if (pos, mod) in history:
             cycle_start = history[pos, mod]
+            print(pos, mod, cycle_start)
             cycle_end = count
             break
         if pos.endswith("Z"):
@@ -68,7 +64,8 @@ def get_divisor(network: Network, instructions: list[Instruction], pos: Node) ->
     assert len(targets) == 1, "This just happens to be the case for the dataset"
     target = targets.pop()
     length = cycle_end - cycle_start
-    return gcd(target, length)
+    assert target == length, "This just happens to be the case for the dataset"
+    return gcd(target, length)  # Could return either
 
 
 def solve(text: str) -> Iterator:
